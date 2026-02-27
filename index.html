@@ -1,0 +1,1639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sea Cured — Yacht Parties on San Diego Bay</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+
+<style>
+/* ─────────────────────────────
+   CUSTOM FONTS
+───────────────────────────── */
+@font-face {
+  font-family: 'Walburn';
+  src: url('./Walburn.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ─────────────────────────────
+   DESIGN TOKENS
+───────────────────────────── */
+:root {
+  --ink:      #08111f;
+  --deep:     #061018;
+  --ocean:    #0b253f;
+  --slate:    #1c3d5c;
+  --horizon:  #2e6a8e;
+  --gold:     #d4a853;
+  --gold2:    #f0c96b;
+  --sand:     #e8dcc8;
+  --foam:     #f5f0e8;
+  --blush:    #e8724a;
+  --sky:      #5badc7;
+  --white:    #fdfcf9;
+  --muted:    rgba(232,220,200,0.55);
+  --border:   rgba(212,168,83,0.18);
+}
+
+/* ─────────────────────────────
+   RESET & BASE
+───────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  background: var(--deep);
+  color: var(--foam);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ─────────────────────────────
+   CUSTOM CURSOR
+───────────────────────────── */
+.cursor {
+  position: fixed;
+  width: 12px; height: 12px;
+  background: var(--gold);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: transform 0.1s, width 0.3s, height 0.3s, opacity 0.3s;
+  mix-blend-mode: difference;
+}
+.cursor-ring {
+  position: fixed;
+  width: 40px; height: 40px;
+  border: 1px solid rgba(212,168,83,0.5);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: transform 0.15s ease, width 0.3s, height 0.3s;
+}
+body:hover .cursor { opacity: 1; }
+a:hover ~ .cursor, button:hover ~ .cursor { width: 20px; height: 20px; }
+
+/* ─────────────────────────────
+   NAVIGATION
+───────────────────────────── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+  padding: 1.6rem 3.5rem;
+  display: flex; align-items: center; justify-content: space-between;
+  transition: background 0.4s, padding 0.4s;
+}
+nav.scrolled {
+  padding: 1rem 3.5rem;
+  background: rgba(6,16,24,0.92);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+.logo img {
+  height: 32px;
+  width: auto;
+  display: block;
+}
+.nav-links { display: flex; gap: 2.5rem; list-style: none; align-items: center; }
+.nav-links a {
+  color: rgba(245,240,232,0.7);
+  text-decoration: none;
+  font-size: 0.78rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: color 0.25s;
+}
+.nav-links a:hover { color: var(--gold2); }
+.nav-book {
+  background: var(--gold);
+  color: var(--ink) !important;
+  padding: 0.6rem 1.6rem;
+  font-weight: 500 !important;
+  border-radius: 1px;
+  transition: background 0.25s, transform 0.2s !important;
+  letter-spacing: 0.08em !important;
+}
+.nav-book:hover { background: var(--gold2) !important; transform: translateY(-1px); }
+
+/* ─────────────────────────────
+   HERO — ANIMATED SKY
+───────────────────────────── */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  overflow: hidden;
+}
+
+/* Sky gradient that cycles through day → golden hour → dusk */
+.sky-canvas {
+  position: absolute; inset: 0;
+  background: linear-gradient(175deg,
+    #041020 0%,
+    #081828 15%,
+    #0d2d4a 35%,
+    #1a4a6e 50%,
+    #2d6a8a 60%,
+    #e8724a 75%,
+    #d4a853 85%,
+    #f0c96b 92%,
+    #fde9a0 100%
+  );
+  background-size: 100% 400%;
+  animation: skyShift 16s ease-in-out infinite alternate;
+}
+
+@keyframes skyShift {
+  0%   { background-position: 0% 0%; }
+  40%  { background-position: 0% 45%; }
+  70%  { background-position: 0% 70%; }
+  100% { background-position: 0% 100%; }
+}
+
+/* Sun disc */
+.sun {
+  position: absolute;
+  width: 90px; height: 90px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff8e0 0%, #f5c842 40%, #e8724a 100%);
+  box-shadow: 0 0 60px 20px rgba(244,196,67,0.4), 0 0 120px 60px rgba(232,114,74,0.2);
+  right: 18%;
+  animation: sunMove 16s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+@keyframes sunMove {
+  0%   { bottom: 110%; opacity: 0; }
+  20%  { bottom: 52%; opacity: 0.3; }
+  50%  { bottom: 38%; opacity: 1; }
+  80%  { bottom: 20%; opacity: 1; }
+  100% { bottom: 8%; opacity: 0.7; }
+}
+
+/* Clouds */
+.clouds-wrap {
+  position: absolute; inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  overflow: hidden;
+}
+.cloud {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+  filter: blur(6px);
+}
+/* Each cloud is a cluster of overlapping rounded shapes via box-shadow */
+.cloud-1 {
+  width: 280px; height: 60px;
+  top: 18%; left: -10%;
+  border-radius: 40px;
+  background: rgba(255,255,255,0.07);
+  box-shadow:
+    80px -20px 0 20px rgba(255,255,255,0.06),
+    160px -10px 0 30px rgba(255,255,255,0.05),
+    240px -5px 0 15px rgba(255,255,255,0.04);
+  filter: blur(8px);
+  animation: cloudDrift1 45s linear infinite;
+}
+.cloud-2 {
+  width: 200px; height: 45px;
+  top: 28%; left: -8%;
+  border-radius: 30px;
+  background: rgba(255,248,230,0.06);
+  box-shadow:
+    60px -15px 0 18px rgba(255,248,230,0.05),
+    130px -8px 0 22px rgba(255,248,230,0.04);
+  filter: blur(10px);
+  animation: cloudDrift2 60s linear infinite;
+}
+.cloud-3 {
+  width: 350px; height: 55px;
+  top: 12%; left: -15%;
+  border-radius: 35px;
+  background: rgba(255,255,255,0.05);
+  box-shadow:
+    100px -18px 0 25px rgba(255,255,255,0.04),
+    200px -8px 0 35px rgba(255,255,255,0.05),
+    300px -12px 0 20px rgba(255,255,255,0.03);
+  filter: blur(12px);
+  animation: cloudDrift3 70s linear infinite;
+}
+.cloud-4 {
+  width: 180px; height: 40px;
+  top: 35%; left: -8%;
+  border-radius: 28px;
+  background: rgba(240,201,107,0.05);
+  box-shadow:
+    55px -12px 0 16px rgba(240,201,107,0.04),
+    120px -6px 0 20px rgba(240,201,107,0.03);
+  filter: blur(10px);
+  animation: cloudDrift4 55s linear infinite;
+}
+.cloud-5 {
+  width: 240px; height: 50px;
+  top: 22%; left: -10%;
+  border-radius: 32px;
+  background: rgba(255,255,255,0.06);
+  box-shadow:
+    70px -14px 0 22px rgba(255,255,255,0.05),
+    150px -6px 0 28px rgba(255,255,255,0.04),
+    210px -10px 0 14px rgba(255,255,255,0.03);
+  filter: blur(9px);
+  animation: cloudDrift5 50s linear infinite;
+}
+.cloud-6 {
+  width: 160px; height: 35px;
+  top: 42%; left: -6%;
+  border-radius: 24px;
+  background: rgba(232,114,74,0.04);
+  box-shadow:
+    50px -10px 0 14px rgba(232,114,74,0.03),
+    100px -5px 0 18px rgba(232,114,74,0.03);
+  filter: blur(12px);
+  animation: cloudDrift6 65s linear infinite;
+}
+.cloud-7 {
+  width: 300px; height: 50px;
+  top: 8%; left: -12%;
+  border-radius: 36px;
+  background: rgba(255,255,255,0.04);
+  box-shadow:
+    90px -16px 0 24px rgba(255,255,255,0.04),
+    180px -8px 0 30px rgba(255,255,255,0.03),
+    260px -12px 0 18px rgba(255,255,255,0.02);
+  filter: blur(14px);
+  animation: cloudDrift7 80s linear infinite;
+}
+
+@keyframes cloudDrift1 { from { transform: translateX(0); } to { transform: translateX(calc(100vw + 400px)); } }
+@keyframes cloudDrift2 { from { transform: translateX(0); } to { transform: translateX(calc(100vw + 350px)); } }
+@keyframes cloudDrift3 { from { transform: translateX(0); } to { transform: translateX(calc(100vw + 500px)); } }
+@keyframes cloudDrift4 { from { transform: translateX(0); } to { transform: translateX(calc(100vw + 300px)); } }
+@keyframes cloudDrift5 { from { transform: translateX(0); } to { transform: translateX(calc(100vw + 400px)); } }
+@keyframes cloudDrift6 { from { transform: translateX(0); } to { transform: translateX(calc(100vw + 280px)); } }
+@keyframes cloudDrift7 { from { transform: translateX(0); } to { transform: translateX(calc(100vw + 450px)); } }
+
+/* Stars */
+.stars-wrap {
+  position: absolute; inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  overflow: hidden;
+  animation: starsFade 16s ease-in-out infinite alternate;
+}
+@keyframes starsFade {
+  0%   { opacity: 1; }
+  30%  { opacity: 0.6; }
+  55%  { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+.star {
+  position: absolute;
+  border-radius: 50%;
+  background: #fff;
+}
+
+/* Twinkling animation variations */
+.star--twinkle1 { animation: twinkle1 3s ease-in-out infinite; }
+.star--twinkle2 { animation: twinkle2 4s ease-in-out infinite; }
+.star--twinkle3 { animation: twinkle3 2.5s ease-in-out infinite; }
+.star--twinkle4 { animation: twinkle4 5s ease-in-out infinite; }
+
+@keyframes twinkle1 { 0%,100%{opacity:0.9;transform:scale(1)} 50%{opacity:0.3;transform:scale(0.6)} }
+@keyframes twinkle2 { 0%,100%{opacity:0.7;transform:scale(1)} 40%{opacity:0.15;transform:scale(0.5)} }
+@keyframes twinkle3 { 0%,100%{opacity:1;transform:scale(1)} 60%{opacity:0.2;transform:scale(0.7)} }
+@keyframes twinkle4 { 0%,100%{opacity:0.6;transform:scale(1)} 50%{opacity:0.1;transform:scale(0.4)} }
+
+/* Bright accent stars with glow */
+.star--bright {
+  box-shadow: 0 0 4px 1px rgba(255,255,255,0.5), 0 0 10px 2px rgba(200,220,255,0.2);
+}
+
+/* Individual star placements — scattered across upper 60% of sky */
+.s1  { width:2px;height:2px; top:5%;  left:8%;  }
+.s2  { width:3px;height:3px; top:8%;  left:22%; }
+.s3  { width:2px;height:2px; top:3%;  left:35%; }
+.s4  { width:1px;height:1px; top:12%; left:45%; }
+.s5  { width:3px;height:3px; top:6%;  left:58%; }
+.s6  { width:2px;height:2px; top:15%; left:72%; }
+.s7  { width:1px;height:1px; top:9%;  left:85%; }
+.s8  { width:2px;height:2px; top:18%; left:14%; }
+.s9  { width:1px;height:1px; top:22%; left:31%; }
+.s10 { width:3px;height:3px; top:14%; left:50%; }
+.s11 { width:1px;height:1px; top:20%; left:65%; }
+.s12 { width:2px;height:2px; top:10%; left:78%; }
+.s13 { width:2px;height:2px; top:25%; left:5%;  }
+.s14 { width:1px;height:1px; top:28%; left:19%; }
+.s15 { width:3px;height:3px; top:17%; left:40%; }
+.s16 { width:1px;height:1px; top:30%; left:55%; }
+.s17 { width:2px;height:2px; top:24%; left:88%; }
+.s18 { width:1px;height:1px; top:33%; left:10%; }
+.s19 { width:2px;height:2px; top:35%; left:28%; }
+.s20 { width:1px;height:1px; top:27%; left:42%; }
+.s21 { width:3px;height:3px; top:4%;  left:92%; }
+.s22 { width:2px;height:2px; top:38%; left:70%; }
+.s23 { width:1px;height:1px; top:32%; left:82%; }
+.s24 { width:2px;height:2px; top:40%; left:48%; }
+.s25 { width:1px;height:1px; top:36%; left:62%; }
+.s26 { width:2px;height:2px; top:7%;  left:48%; }
+.s27 { width:1px;height:1px; top:42%; left:15%; }
+.s28 { width:3px;height:3px; top:2%;  left:68%; }
+.s29 { width:1px;height:1px; top:44%; left:36%; }
+.s30 { width:2px;height:2px; top:11%; left:3%;  }
+.s31 { width:1px;height:1px; top:16%; left:95%; }
+.s32 { width:2px;height:2px; top:21%; left:52%; }
+.s33 { width:1px;height:1px; top:46%; left:90%; }
+.s34 { width:2px;height:2px; top:39%; left:25%; }
+.s35 { width:1px;height:1px; top:48%; left:58%; }
+
+/* Water reflection at bottom */
+.water {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 38%;
+}
+.water-base {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top,
+    rgba(4,12,22,0.97) 0%,
+    rgba(8,24,44,0.85) 40%,
+    rgba(15,40,70,0.6) 70%,
+    transparent 100%
+  );
+}
+.water-shimmer {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 60%;
+  background: repeating-linear-gradient(
+    to right,
+    transparent 0px,
+    rgba(212,168,83,0.06) 1px,
+    transparent 3px,
+    transparent 18px
+  );
+  animation: shimmer 4s linear infinite;
+}
+@keyframes shimmer { from { background-position: 0 0; } to { background-position: 60px 0; } }
+
+/* Horizon line */
+.horizon-line {
+  position: absolute;
+  left: 0; right: 0;
+  bottom: 36%;
+  height: 1px;
+  background: linear-gradient(to right, transparent 0%, rgba(212,168,83,0.35) 30%, rgba(240,201,107,0.6) 50%, rgba(212,168,83,0.35) 70%, transparent 100%);
+}
+
+/* Wave layers */
+.waves-wrap { position: absolute; bottom: 0; left: 0; right: 0; height: 260px; overflow: hidden; }
+.wave-svg {
+  position: absolute; bottom: 0; width: 200%; left: 0;
+}
+.w1 { animation: wv 10s linear infinite; opacity: 0.7; }
+.w2 { animation: wv 15s linear infinite reverse; opacity: 0.5; bottom: 8px; }
+.w3 { animation: wv 7s linear infinite; opacity: 0.4; bottom: 18px; }
+@keyframes wv { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* Hero content */
+.hero-content {
+  position: relative; z-index: 10;
+  align-self: end;
+  padding: 0 4rem 4rem;
+  max-width: 820px;
+}
+.hero-kicker {
+  display: inline-flex; align-items: center; gap: 0.8rem;
+  font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--gold2);
+  margin-bottom: 1.8rem;
+  opacity: 0; animation: riseIn 0.8s ease forwards 0.4s;
+}
+.kicker-line { width: 30px; height: 1px; background: var(--gold); }
+.hero-h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(4rem, 8.5vw, 8.5rem);
+  font-weight: 900;
+  line-height: 0.95;
+  color: var(--white);
+  letter-spacing: -0.02em;
+  opacity: 0; animation: riseIn 1s ease forwards 0.6s;
+}
+.hero-h1 .italic { font-style: italic; color: var(--gold2); display: block; }
+.hero-h1 .italic.blush { color: var(--blush); }
+.hero-sub {
+  margin-top: 2rem;
+  font-size: 1.05rem; font-weight: 300;
+  line-height: 1.75;
+  color: rgba(232,220,200,0.7);
+  max-width: 440px;
+  opacity: 0; animation: riseIn 1s ease forwards 0.85s;
+}
+.hero-actions {
+  margin-top: 2.5rem;
+  display: flex; gap: 1rem; align-items: center;
+  opacity: 0; animation: riseIn 1s ease forwards 1.05s;
+}
+.btn-gold {
+  background: var(--gold); color: var(--ink);
+  padding: 1rem 2.4rem;
+  font-family: 'DM Sans', sans-serif; font-size: 0.8rem; font-weight: 500;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  border: none; border-radius: 1px; cursor: pointer;
+  text-decoration: none; display: inline-block;
+  transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
+  box-shadow: 0 0 0 0 rgba(212,168,83,0);
+}
+.btn-gold:hover {
+  background: var(--gold2); transform: translateY(-3px);
+  box-shadow: 0 15px 40px rgba(212,168,83,0.25);
+}
+.btn-wire {
+  color: rgba(245,240,232,0.8);
+  font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase;
+  text-decoration: none; display: flex; align-items: center; gap: 0.6rem;
+  transition: color 0.25s;
+}
+.btn-wire:hover { color: var(--gold2); }
+.btn-wire svg { transition: transform 0.25s; }
+.btn-wire:hover svg { transform: translateX(5px); }
+
+/* Hero right — floating stat cards */
+.hero-stats {
+  position: absolute; right: 4rem; bottom: 6rem; z-index: 10;
+  display: flex; flex-direction: column; gap: 0.8rem;
+  opacity: 0; animation: riseIn 1s ease forwards 1.3s;
+}
+.stat-card {
+  background: rgba(11,37,63,0.65);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border);
+  padding: 1rem 1.5rem;
+  min-width: 160px;
+  border-radius: 2px;
+}
+.stat-card-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.2rem; font-weight: 700; color: var(--gold2);
+  line-height: 1;
+}
+.stat-card-label { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-top: 0.25rem; }
+
+/* Scroll cue */
+.scroll-cue {
+  position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+  z-index: 10; opacity: 0; animation: fadeIn 1s ease forwards 2s;
+}
+.scroll-cue span { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+.scroll-mouse {
+  width: 22px; height: 34px;
+  border: 1px solid rgba(212,168,83,0.4);
+  border-radius: 11px;
+  position: relative;
+}
+.scroll-mouse::after {
+  content: '';
+  position: absolute; top: 6px; left: 50%; transform: translateX(-50%);
+  width: 3px; height: 6px; background: var(--gold); border-radius: 2px;
+  animation: scrollDot 2s ease-in-out infinite;
+}
+@keyframes scrollDot { 0%,100%{top:6px;opacity:1} 80%{top:18px;opacity:0} }
+
+@keyframes riseIn { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+
+/* ─────────────────────────────
+   TICKER TAPE
+───────────────────────────── */
+.ticker {
+  background: var(--gold); overflow: hidden; padding: 0.75rem 0;
+  white-space: nowrap; position: relative;
+}
+.ticker-track {
+  display: inline-flex; gap: 0;
+  animation: tick 25s linear infinite;
+}
+.ticker-item {
+  color: var(--ink);
+  font-size: 0.7rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase;
+  padding: 0 2.5rem;
+  display: flex; align-items: center; gap: 0.6rem;
+}
+.ticker-sep { width: 4px; height: 4px; background: rgba(8,17,31,0.3); border-radius: 50%; }
+@keyframes tick { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+/* ─────────────────────────────
+   SECTION WRAPPER
+───────────────────────────── */
+.section { padding: 7rem 4rem; }
+.section-sm { padding: 4rem 4rem; }
+.container { max-width: 1300px; margin: 0 auto; }
+
+.eyebrow {
+  font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 1rem;
+  display: flex; align-items: center; gap: 0.7rem;
+}
+.eyebrow::before { content: ''; width: 24px; height: 1px; background: var(--gold); }
+
+.display-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.5rem, 4vw, 4.2rem);
+  font-weight: 700; line-height: 1.05;
+  color: var(--white);
+}
+.display-title em { font-style: italic; color: var(--gold2); }
+.divider-gold { width: 48px; height: 1px; background: var(--gold); margin: 1.8rem 0; opacity: 0.6; }
+
+/* ─────────────────────────────
+   ABOUT / INTRO SECTION
+───────────────────────────── */
+.intro-layout {
+  display: grid; grid-template-columns: 1.1fr 0.9fr;
+  gap: 6rem; align-items: center;
+}
+.intro-visual-wrap { position: relative; }
+
+/* Stacked card visual */
+.visual-stack { position: relative; height: 520px; }
+.v-card {
+  position: absolute; border-radius: 2px; overflow: hidden;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+}
+.v-card-a {
+  width: 68%; height: 72%;
+  top: 0; right: 0;
+  background: url('./images/girls-railing.jpg') center center / cover no-repeat;
+}
+.v-card-b {
+  width: 58%; height: 55%;
+  bottom: 0; left: 0;
+  background: url('./images/sunset-bay.jpg') center center / cover no-repeat;
+  border: 1px solid var(--border);
+}
+
+/* Photo overlay for depth */
+.v-card-a::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, transparent 50%, rgba(6,16,24,0.4) 100%);
+}
+/* Decorative label bottom of each card */
+.v-card-label {
+  position: absolute; bottom: 1.5rem; left: 1.5rem;
+  background: rgba(6,16,24,0.75); backdrop-filter: blur(12px);
+  padding: 0.6rem 1rem; border-left: 2px solid var(--gold);
+}
+.v-card-label-sub { font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); }
+.v-card-label-main { font-family: 'DM Serif Display', serif; font-size: 1rem; color: var(--white); margin-top: 0.1rem; }
+
+.v-float-badge {
+  position: absolute; z-index: 5;
+  top: 44%; left: 10%;
+  width: 100px; height: 100px;
+  background: var(--gold);
+  border-radius: 50%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center;
+  color: var(--ink); font-size: 0.6rem; font-weight: 500; letter-spacing: 0.08em;
+  text-transform: uppercase; line-height: 1.5;
+  animation: spin 25s linear infinite;
+  box-shadow: 0 10px 40px rgba(212,168,83,0.3);
+}
+@keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+.v-float-badge-inner { animation: spin 25s linear infinite reverse; text-align: center; padding: 0.5rem; }
+
+/* Intro text */
+.intro-body { font-size: 1rem; line-height: 1.85; color: var(--muted); margin-bottom: 2rem; }
+
+.stat-row { display: flex; gap: 3rem; padding-top: 2rem; border-top: 1px solid var(--border); }
+.stat-item-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem; font-weight: 700; color: var(--gold2); line-height: 1;
+}
+.stat-item-label { font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 0.3rem; }
+
+/* ─────────────────────────────
+   EXPERIENCE SELECTOR — interactive
+───────────────────────────── */
+.exp-section { background: var(--ocean); position: relative; overflow: hidden; }
+.exp-section::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 70% 60% at 100% 50%, rgba(212,168,83,0.04) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 80% at 0% 0%, rgba(11,37,63,0.6) 0%, transparent 50%);
+}
+
+.exp-top {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  margin-bottom: 4rem;
+}
+
+/* Horizontal scroll cards */
+.exp-scroller-wrap {
+  overflow-x: auto; overflow-y: visible;
+  margin: 0 -4rem; padding: 0 4rem 2rem;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.exp-scroller-wrap::-webkit-scrollbar { display: none; }
+.exp-scroller {
+  display: flex; gap: 1.5rem;
+  width: max-content;
+}
+
+.exp-card {
+  width: 340px; flex-shrink: 0;
+  background: rgba(6,16,24,0.7); backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  padding: 2.5rem; position: relative; overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.35s, transform 0.35s, box-shadow 0.35s;
+  border-radius: 2px;
+}
+.exp-card::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(212,168,83,0.07) 0%, transparent 50%);
+  opacity: 0; transition: opacity 0.35s;
+}
+.exp-card:hover { border-color: rgba(212,168,83,0.45); transform: translateY(-8px); box-shadow: 0 30px 80px rgba(0,0,0,0.35); }
+.exp-card:hover::after { opacity: 1; }
+
+/* Featured card */
+.exp-card.exp-featured {
+  background: linear-gradient(160deg, rgba(15,45,72,0.95) 0%, rgba(22,68,100,0.85) 100%);
+  border-color: rgba(212,168,83,0.3);
+  width: 380px;
+}
+
+/* Experience card image header */
+.exp-card-img {
+  width: calc(100% + 5rem);
+  height: 200px;
+  margin: -2.5rem -2.5rem 1.8rem;
+  object-fit: cover;
+  display: block;
+}
+
+.exp-emoji { font-size: 2.2rem; margin-bottom: 1.5rem; display: block; }
+.exp-cap {
+  font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold);
+  margin-bottom: 0.5rem;
+}
+.exp-name {
+  font-family: 'DM Serif Display', serif; font-size: 1.7rem; color: var(--white);
+  line-height: 1.2; margin-bottom: 1rem;
+}
+.exp-desc { font-size: 0.86rem; line-height: 1.75; color: var(--muted); margin-bottom: 1.5rem; }
+.exp-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.5rem; }
+.tag {
+  font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 0.3rem 0.75rem;
+  border: 1px solid rgba(212,168,83,0.25); color: var(--gold2); border-radius: 20px;
+}
+.exp-footer {
+  padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.07);
+  display: flex; align-items: baseline; gap: 0.4rem;
+}
+.exp-from { font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.exp-price { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--white); }
+.exp-unit { font-size: 0.72rem; color: var(--muted); }
+
+/* Drag hint */
+.drag-hint {
+  display: flex; align-items: center; gap: 0.6rem;
+  font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--muted); margin-top: 2rem;
+}
+.drag-hint-icon { font-size: 1rem; }
+
+/* ─────────────────────────────
+   AOLANI FLAGSHIP
+───────────────────────────── */
+.flagship-layout {
+  display: grid; grid-template-columns: 1fr 1fr;
+  border: 1px solid var(--border); overflow: hidden;
+}
+.flagship-visual {
+  position: relative; min-height: 540px;
+  background: url('./images/aolani-coronado-pano.jpg') center center / cover no-repeat;
+  overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; padding: 3rem;
+}
+/* Animated water surface */
+.flagship-water {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 65%;
+  background: linear-gradient(to top, rgba(4,12,22,0.98) 0%, rgba(10,30,50,0.8) 50%, transparent 100%);
+}
+/* Large decorative text background */
+.flagship-bg-text {
+  position: absolute;
+  top: 50%; left: 50%; transform: translate(-50%, -50%);
+  font-family: 'Playfair Display', serif;
+  font-size: 11rem; font-weight: 900; font-style: italic;
+  color: rgba(255,255,255,0.03);
+  white-space: nowrap; pointer-events: none;
+  letter-spacing: -0.04em;
+}
+.flagship-accent {
+  position: absolute; top: 2rem; right: 2rem;
+  width: 80px; height: 80px;
+  border: 1px solid var(--border); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2rem;
+}
+.flagship-name-block { position: relative; z-index: 2; }
+.flagship-eyebrow {
+  font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold);
+  margin-bottom: 0.5rem;
+}
+.flagship-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 4rem; font-weight: 700; font-style: italic;
+  color: var(--white); line-height: 1; letter-spacing: 0.02em;
+}
+.flagship-sub { font-size: 0.8rem; letter-spacing: 0.1em; color: var(--muted); margin-top: 0.5rem; }
+
+.flagship-info {
+  background: var(--ink);
+  padding: 4rem; display: flex; flex-direction: column; gap: 2.5rem; justify-content: center;
+}
+.flagship-body { font-size: 0.95rem; line-height: 1.85; color: var(--muted); }
+
+.specs-4 {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+}
+.spec-cell {
+  background: rgba(11,25,40,0.8);
+  padding: 1.2rem 1.5rem;
+}
+.spec-val {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.9rem; font-weight: 700; color: var(--gold2); line-height: 1;
+}
+.spec-key {
+  font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-top: 0.3rem;
+}
+.amenities { display: flex; flex-direction: column; gap: 0.65rem; }
+.amenity {
+  display: flex; align-items: center; gap: 0.9rem;
+  font-size: 0.85rem; color: var(--foam);
+}
+.amenity-dot {
+  width: 18px; height: 1px; background: var(--gold); flex-shrink: 0;
+}
+
+/* ─────────────────────────────
+   SERVICES — CATERING & BAR
+───────────────────────────── */
+.services-section { background: var(--deep); }
+.services-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
+  margin-top: 4.5rem;
+}
+.service-card {
+  padding: 3.5rem; border: 1px solid var(--border);
+  position: relative; overflow: hidden;
+  transition: border-color 0.3s;
+}
+.service-card:hover { border-color: rgba(212,168,83,0.4); }
+.service-bg-icon {
+  position: absolute; top: -1.5rem; right: 2rem;
+  font-size: 9rem; opacity: 0.04; pointer-events: none;
+  line-height: 1;
+}
+.service-eyebrow { font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.8rem; }
+.service-title {
+  font-family: 'DM Serif Display', serif; font-size: 2.1rem; color: var(--white); margin-bottom: 1.2rem;
+}
+.service-body { font-size: 0.9rem; line-height: 1.8; color: var(--muted); margin-bottom: 2rem; }
+
+/* ─────────────────────────────
+   HOW IT WORKS
+───────────────────────────── */
+.how-section { background: var(--ocean); overflow: hidden; }
+.how-steps {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 2.5rem; margin-top: 5rem;
+  position: relative;
+}
+.how-steps::before {
+  content: '';
+  position: absolute; top: 1.3rem;
+  left: calc(12.5% + 1.25rem); right: calc(12.5% + 1.25rem);
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--gold) 20%, var(--gold) 80%, transparent);
+  opacity: 0.2;
+}
+.how-step { position: relative; }
+.how-num {
+  width: 42px; height: 42px;
+  border: 1px solid var(--gold); color: var(--gold);
+  font-family: 'Playfair Display', serif; font-size: 1.2rem;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--ocean); position: relative; z-index: 1;
+  margin-bottom: 1.5rem;
+}
+.how-title { font-family: 'DM Serif Display', serif; font-size: 1.3rem; color: var(--white); margin-bottom: 0.8rem; }
+.how-body { font-size: 0.83rem; line-height: 1.75; color: var(--muted); }
+
+/* ─────────────────────────────
+   OCCASIONS CLOUD
+───────────────────────────── */
+.occ-section { background: var(--deep); }
+.occ-cloud {
+  display: flex; flex-wrap: wrap; gap: 0.8rem;
+  margin-top: 3.5rem;
+}
+.occ-pill {
+  padding: 0.85rem 1.8rem;
+  border: 1px solid var(--border);
+  font-size: 0.82rem; color: var(--foam);
+  cursor: default; transition: all 0.25s;
+  border-radius: 1px;
+}
+.occ-pill:hover { border-color: var(--gold); background: rgba(212,168,83,0.07); color: var(--gold2); transform: translateY(-2px); }
+
+/* ─────────────────────────────
+   SOCIAL PROOF
+───────────────────────────── */
+.reviews-section { background: var(--ink); overflow: hidden; }
+.reviews-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+  margin-top: 4rem;
+}
+.review-card {
+  padding: 2.5rem; background: rgba(11,37,63,0.4);
+  border: 1px solid var(--border); border-radius: 2px;
+}
+.review-stars { color: var(--gold); font-size: 0.85rem; margin-bottom: 1.2rem; letter-spacing: 0.1em; }
+.review-text { font-size: 0.88rem; line-height: 1.8; color: var(--foam); font-style: italic; margin-bottom: 1.5rem; }
+.review-text::before { content: '\201C'; }
+.review-text::after { content: '\201D'; }
+.review-author { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); }
+.review-occasion { font-size: 0.68rem; color: var(--muted); margin-top: 0.2rem; }
+
+/* ─────────────────────────────
+   PHOTO GALLERY MOSAIC
+───────────────────────────── */
+.gallery-section {
+  background: var(--deep);
+  padding: 6rem 0 0;
+  overflow: hidden;
+}
+.gallery-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding: 0 4rem;
+}
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 280px;
+  gap: 4px;
+}
+.gallery-item {
+  overflow: hidden;
+  position: relative;
+}
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease, filter 0.6s ease;
+  filter: brightness(0.85);
+}
+.gallery-item:hover img {
+  transform: scale(1.05);
+  filter: brightness(1);
+}
+.gallery-item.g-wide { grid-column: span 2; }
+.gallery-item.g-tall { grid-row: span 2; }
+
+/* ─────────────────────────────
+   CTA — FULL BLEED FINALE
+───────────────────────────── */
+.cta-section {
+  position: relative; overflow: hidden;
+  padding: 9rem 4rem;
+  text-align: center;
+  background: url('./images/purple-masts.jpg') center center / cover no-repeat;
+}
+.cta-bg {
+  position: absolute; inset: 0;
+  background:
+    rgba(6,16,24,0.7),
+    radial-gradient(ellipse 80% 60% at 50% 50%, rgba(212,168,83,0.07) 0%, transparent 65%);
+}
+/* Large italic background text */
+.cta-ghost {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(6rem, 15vw, 18rem); font-weight: 900; font-style: italic;
+  color: rgba(255,255,255,0.02); white-space: nowrap; pointer-events: none;
+  letter-spacing: -0.04em;
+}
+.cta-content { position: relative; z-index: 2; }
+.cta-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3rem, 5.5vw, 5.5rem); font-weight: 900;
+  color: var(--white); line-height: 1.05; margin-bottom: 1.5rem;
+}
+.cta-title em { font-style: italic; color: var(--gold2); }
+.cta-sub { font-size: 1rem; color: var(--muted); max-width: 500px; margin: 0 auto 2.5rem; line-height: 1.75; }
+.cta-actions { display: flex; justify-content: center; gap: 1.2rem; flex-wrap: wrap; }
+.btn-outline {
+  background: transparent; border: 1px solid rgba(232,220,200,0.4);
+  color: var(--foam); padding: 1rem 2.4rem;
+  font-size: 0.8rem; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase;
+  cursor: pointer; text-decoration: none; display: inline-block;
+  transition: all 0.25s; border-radius: 1px;
+}
+.btn-outline:hover { border-color: var(--gold); color: var(--gold2); }
+.cta-email { margin-top: 2rem; font-size: 0.78rem; color: rgba(232,220,200,0.3); letter-spacing: 0.08em; }
+
+/* ─────────────────────────────
+   FOOTER
+───────────────────────────── */
+footer {
+  background: var(--deep);
+  border-top: 1px solid var(--border);
+  padding: 3rem 4rem;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 1.5rem;
+}
+.footer-brand {}
+.footer-logo {
+  display: inline-block; text-decoration: none;
+}
+.footer-logo img {
+  height: 28px;
+  width: auto;
+  display: block;
+}
+.footer-tagline { font-size: 0.68rem; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase; margin-top: 0.4rem; }
+.footer-links { display: flex; gap: 2rem; list-style: none; }
+.footer-links a { color: var(--muted); text-decoration: none; font-size: 0.78rem; letter-spacing: 0.08em; transition: color 0.2s; }
+.footer-links a:hover { color: var(--gold); }
+.footer-copy { font-size: 0.7rem; color: rgba(232,220,200,0.25); }
+
+/* ─────────────────────────────
+   SCROLL REVEAL
+───────────────────────────── */
+.sr {
+  opacity: 0; transform: translateY(32px);
+  transition: opacity 0.85s ease, transform 0.85s ease;
+}
+.sr.vis { opacity: 1; transform: translateY(0); }
+.sr-d1 { transition-delay: 0.1s; }
+.sr-d2 { transition-delay: 0.2s; }
+.sr-d3 { transition-delay: 0.3s; }
+.sr-d4 { transition-delay: 0.4s; }
+
+/* ─────────────────────────────
+   MOBILE
+───────────────────────────── */
+@media (max-width: 960px) {
+  .cursor, .cursor-ring { display: none; }
+  body { cursor: auto; }
+  nav { padding: 1.2rem 2rem; }
+  .nav-links { display: none; }
+  .section { padding: 5rem 2rem; }
+  .hero-content { padding: 0 2rem 5rem; }
+  .hero-stats { display: none; }
+  .intro-layout { grid-template-columns: 1fr; gap: 3rem; }
+  .visual-stack { height: 300px; }
+  .exp-scroller-wrap { margin: 0 -2rem; padding: 0 2rem 2rem; }
+  .flagship-layout { grid-template-columns: 1fr; }
+  .flagship-visual { min-height: 280px; }
+  .flagship-info { padding: 2.5rem 2rem; }
+  .services-grid { grid-template-columns: 1fr; }
+  .how-steps { grid-template-columns: 1fr 1fr; }
+  .how-steps::before { display: none; }
+  .reviews-grid { grid-template-columns: 1fr; }
+  .gallery-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+  .gallery-item.g-wide { grid-column: span 2; }
+  .gallery-item img { height: 200px; }
+  .gallery-header { padding: 0 2rem; }
+  .cta-section { padding: 6rem 2rem; }
+  footer { flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<!-- CUSTOM CURSOR -->
+<div class="cursor" id="cur"></div>
+<div class="cursor-ring" id="curRing"></div>
+
+<!-- ──────── NAV ──────── -->
+<nav id="nav">
+  <a href="#" class="logo"><img src="./Sea_Cured_Charters.png" alt="Sea·Cured Charters"></a>
+  <ul class="nav-links">
+    <li><a href="#experiences">Experiences</a></li>
+    <li><a href="#fleet">The Fleet</a></li>
+    <li><a href="#services">Catering & Bar</a></li>
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#book" class="nav-book">Book Now</a></li>
+  </ul>
+</nav>
+
+<!-- ──────── HERO ──────── -->
+<section class="hero" id="home">
+  <div class="sky-canvas"></div>
+  <div class="stars-wrap">
+    <div class="star s1  star--twinkle1"></div>
+    <div class="star s2  star--twinkle3 star--bright"></div>
+    <div class="star s3  star--twinkle2"></div>
+    <div class="star s4  star--twinkle4"></div>
+    <div class="star s5  star--twinkle1 star--bright"></div>
+    <div class="star s6  star--twinkle3"></div>
+    <div class="star s7  star--twinkle2"></div>
+    <div class="star s8  star--twinkle4"></div>
+    <div class="star s9  star--twinkle1"></div>
+    <div class="star s10 star--twinkle2 star--bright"></div>
+    <div class="star s11 star--twinkle4"></div>
+    <div class="star s12 star--twinkle1"></div>
+    <div class="star s13 star--twinkle3"></div>
+    <div class="star s14 star--twinkle2"></div>
+    <div class="star s15 star--twinkle4 star--bright"></div>
+    <div class="star s16 star--twinkle1"></div>
+    <div class="star s17 star--twinkle3"></div>
+    <div class="star s18 star--twinkle2"></div>
+    <div class="star s19 star--twinkle4"></div>
+    <div class="star s20 star--twinkle1"></div>
+    <div class="star s21 star--twinkle3 star--bright"></div>
+    <div class="star s22 star--twinkle2"></div>
+    <div class="star s23 star--twinkle4"></div>
+    <div class="star s24 star--twinkle1"></div>
+    <div class="star s25 star--twinkle3"></div>
+    <div class="star s26 star--twinkle2"></div>
+    <div class="star s27 star--twinkle1"></div>
+    <div class="star s28 star--twinkle4 star--bright"></div>
+    <div class="star s29 star--twinkle3"></div>
+    <div class="star s30 star--twinkle2"></div>
+    <div class="star s31 star--twinkle1"></div>
+    <div class="star s32 star--twinkle4"></div>
+    <div class="star s33 star--twinkle3"></div>
+    <div class="star s34 star--twinkle2"></div>
+    <div class="star s35 star--twinkle1"></div>
+  </div>
+  <div class="sun"></div>
+  <div class="clouds-wrap">
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+    <div class="cloud cloud-3"></div>
+    <div class="cloud cloud-4"></div>
+    <div class="cloud cloud-5"></div>
+    <div class="cloud cloud-6"></div>
+    <div class="cloud cloud-7"></div>
+  </div>
+  <div class="water">
+    <div class="water-base"></div>
+    <div class="water-shimmer"></div>
+  </div>
+  <div class="horizon-line"></div>
+  <div class="waves-wrap">
+    <svg class="wave-svg w1" viewBox="0 0 1440 80" preserveAspectRatio="none">
+      <path d="M0,40 C200,10 400,70 600,40 C800,10 1000,70 1200,40 C1320,20 1380,55 1440,40 L1440,80 L0,80Z" fill="rgba(212,168,83,0.45)"/>
+    </svg>
+    <svg class="wave-svg w2" viewBox="0 0 1440 80" preserveAspectRatio="none">
+      <path d="M0,50 C180,20 360,80 540,50 C720,20 900,80 1080,50 C1260,20 1350,65 1440,50 L1440,80 L0,80Z" fill="rgba(20,65,115,0.6)"/>
+    </svg>
+    <svg class="wave-svg w3" viewBox="0 0 1440 80" preserveAspectRatio="none">
+      <path d="M0,30 C240,60 480,10 720,40 C960,70 1200,20 1440,40 L1440,80 L0,80Z" fill="rgba(6,16,24,0.8)"/>
+    </svg>
+  </div>
+
+  <!-- Stats right side -->
+  <div class="hero-stats">
+    <div class="stat-card">
+      <div class="stat-card-num">48</div>
+      <div class="stat-card-label">Max Guests</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-num">6</div>
+      <div class="stat-card-label">Min Group</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-num">365</div>
+      <div class="stat-card-label">Days of Sun</div>
+    </div>
+  </div>
+
+  <!-- Main content -->
+  <div class="hero-content">
+    <p class="hero-kicker">
+      <span class="kicker-line"></span>
+      San Diego Bay &nbsp;·&nbsp; Private Charters &nbsp;·&nbsp; Est. 2024
+    </p>
+    <h1 class="hero-h1">
+      Salt air.
+      <span class="italic">Golden</span>
+      <span class="italic blush">hour.</span>
+    </h1>
+    <p class="hero-sub">Intimate sunset sails for six. Full-party catamarans for forty-eight. Every charter is private, every moment is yours — on San Diego Bay with open bar, catering, and the Pacific as your backdrop.</p>
+    <div class="hero-actions">
+      <a href="#book" class="btn-gold">Reserve Your Charter</a>
+      <a href="#experiences" class="btn-wire">
+        Explore Experiences
+        <svg width="18" height="10" viewBox="0 0 18 10" fill="none">
+          <path d="M1 5H17M17 5L13 1M17 5L13 9" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+
+  <div class="scroll-cue">
+    <div class="scroll-mouse"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- ──────── TICKER ──────── -->
+<div class="ticker">
+  <div class="ticker-track">
+    <span class="ticker-item">Private Charters<span class="ticker-sep"></span></span>
+    <span class="ticker-item">Sunset Sails<span class="ticker-sep"></span></span>
+    <span class="ticker-item">Bachelorette Parties<span class="ticker-sep"></span></span>
+    <span class="ticker-item">Corporate Events<span class="ticker-sep"></span></span>
+    <span class="ticker-item">Open Bar Available<span class="ticker-sep"></span></span>
+    <span class="ticker-item">Catering Options<span class="ticker-sep"></span></span>
+    <span class="ticker-item">San Diego Bay<span class="ticker-sep"></span></span>
+    <span class="ticker-item">AOLANI Catamaran<span class="ticker-sep"></span></span>
+    <span class="ticker-item">Birthday Parties<span class="ticker-sep"></span></span>
+    <span class="ticker-item">6 to 48 Guests<span class="ticker-sep"></span></span>
+    <!-- duplicate -->
+    <span class="ticker-item">Private Charters<span class="ticker-sep"></span></span>
+    <span class="ticker-item">Sunset Sails<span class="ticker-sep"></span></span>
+    <span class="ticker-item">Bachelorette Parties<span class="ticker-sep"></span></span>
+    <span class="ticker-item">Corporate Events<span class="ticker-sep"></span></span>
+    <span class="ticker-item">Open Bar Available<span class="ticker-sep"></span></span>
+    <span class="ticker-item">Catering Options<span class="ticker-sep"></span></span>
+    <span class="ticker-item">San Diego Bay<span class="ticker-sep"></span></span>
+    <span class="ticker-item">AOLANI Catamaran<span class="ticker-sep"></span></span>
+    <span class="ticker-item">Birthday Parties<span class="ticker-sep"></span></span>
+    <span class="ticker-item">6 to 48 Guests<span class="ticker-sep"></span></span>
+  </div>
+</div>
+
+<!-- ──────── INTRO ──────── -->
+<section class="section" id="about">
+  <div class="container">
+    <div class="intro-layout">
+      <div class="intro-visual-wrap sr">
+        <div class="visual-stack">
+          <div class="v-card v-card-a">
+            <div class="v-card-label">
+              <div class="v-card-label-sub">Featured Vessel</div>
+              <div class="v-card-label-main">AOLANI Catamaran</div>
+            </div>
+          </div>
+          <div class="v-card v-card-b">
+            <div class="v-card-label">
+              <div class="v-card-label-sub">Location</div>
+              <div class="v-card-label-main">San Diego Bay</div>
+            </div>
+          </div>
+          <div class="v-float-badge">
+            <div class="v-float-badge-inner">San<br>Diego<br>★<br>Bay</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sr sr-d2">
+        <p class="eyebrow">About Sea Cured</p>
+        <h2 class="display-title">Your private <em>escape</em><br>on the bay</h2>
+        <div class="divider-gold"></div>
+        <p class="intro-body">Sea Cured connects you with San Diego's finest private sailing catamarans and sailboats. We work with the best boats on the bay — including the stunning AOLANI catamaran — and handle every detail of your charter experience.<br><br>Whether you're planning a six-person sunset cruise or a 48-person deck party with a full bar and catering, we curate the right vessel, crew, and package so you can simply arrive and enjoy.</p>
+        <div class="stat-row">
+          <div>
+            <div class="stat-item-num">6</div>
+            <div class="stat-item-label">Min Guests</div>
+          </div>
+          <div>
+            <div class="stat-item-num">48</div>
+            <div class="stat-item-label">Max Guests</div>
+          </div>
+          <div>
+            <div class="stat-item-num">365</div>
+            <div class="stat-item-label">Days of Sun</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ──────── EXPERIENCES ──────── -->
+<section class="section exp-section" id="experiences">
+  <div class="container">
+    <div class="exp-top sr">
+      <div>
+        <p class="eyebrow">What We Offer</p>
+        <h2 class="display-title">Choose your<br><em>experience</em></h2>
+      </div>
+      <a href="#book" class="btn-gold" style="align-self:flex-end">View All Charters</a>
+    </div>
+  </div>
+
+  <div class="exp-scroller-wrap sr sr-d1">
+    <div class="exp-scroller">
+
+      <div class="exp-card exp-featured">
+        <img class="exp-card-img" src="./images/yacht-group-skyline.jpg" alt="Group celebrating on yacht with San Diego skyline">
+        <p class="exp-cap">Up to 48 guests · Flagship</p>
+        <h3 class="exp-name">The Grand Catamaran Party</h3>
+        <p class="exp-desc">The full Sea Cured experience. AOLANI and our premium catamarans offer expansive deck space, full bar service, catering options, and unmatched views of the downtown skyline and Coronado Bridge. The ultimate floating event venue on San Diego Bay.</p>
+        <div class="exp-tags">
+          <span class="tag">Open Bar</span>
+          <span class="tag">Catering</span>
+          <span class="tag">Sound System</span>
+          <span class="tag">Full Crew</span>
+          <span class="tag">Restrooms</span>
+        </div>
+        <div class="exp-footer">
+          <span class="exp-from">From</span>
+          <span class="exp-price">$800</span>
+          <span class="exp-unit">/ hr</span>
+        </div>
+      </div>
+
+      <div class="exp-card">
+        <img class="exp-card-img" src="./images/guys-hug.jpg" alt="Friends sharing a moment on the bay">
+        <p class="exp-cap">Up to 6 guests</p>
+        <h3 class="exp-name">The Sunset 6-Pack</h3>
+        <p class="exp-desc">Small, personal, and unforgettable. A private sailboat, six close friends, cold drinks, and San Diego's legendary golden hour. The most intimate way to experience the bay.</p>
+        <div class="exp-tags">
+          <span class="tag">BYO Drinks</span>
+          <span class="tag">Private Captain</span>
+          <span class="tag">2hr Min</span>
+        </div>
+        <div class="exp-footer">
+          <span class="exp-from">From</span>
+          <span class="exp-price">$250</span>
+          <span class="exp-unit">/ hr</span>
+        </div>
+      </div>
+
+      <div class="exp-card">
+        <img class="exp-card-img" src="./images/white-party.jpg" alt="White party on the catamaran">
+        <p class="exp-cap">Up to 24 guests</p>
+        <h3 class="exp-name">The Mid-Size Charter</h3>
+        <p class="exp-desc">Big enough to dance, intimate enough to feel exclusive. Perfect for bachelorettes, birthdays, and smaller team outings. Bar packages available and catering can be arranged.</p>
+        <div class="exp-tags">
+          <span class="tag">Bar Package</span>
+          <span class="tag">Catering Optional</span>
+          <span class="tag">Dance Space</span>
+        </div>
+        <div class="exp-footer">
+          <span class="exp-from">From</span>
+          <span class="exp-price">$475</span>
+          <span class="exp-unit">/ hr</span>
+        </div>
+      </div>
+
+      <div class="exp-card">
+        <img class="exp-card-img" src="./images/corporate-group.jpg" alt="Corporate team outing on the bay">
+        <p class="exp-cap">Flexible capacity</p>
+        <h3 class="exp-name">Corporate & Private Events</h3>
+        <p class="exp-desc">Impress clients, reward your team, or host a milestone celebration unlike any other. Fully customizable with catering, branded elements, and a dedicated Sea Cured event coordinator.</p>
+        <div class="exp-tags">
+          <span class="tag">Custom Packages</span>
+          <span class="tag">Full Catering</span>
+          <span class="tag">Coordinator</span>
+        </div>
+        <div class="exp-footer">
+          <span class="exp-from">Custom</span>
+          <span class="exp-price" style="font-size:1.4rem;align-self:center;margin-left:0.3rem">Pricing</span>
+        </div>
+      </div>
+
+      <div class="exp-card">
+        <img class="exp-card-img" src="./images/wedding-bay.jpg" alt="Wedding ceremony on the bay">
+        <p class="exp-cap">Up to 48 guests</p>
+        <h3 class="exp-name">Weddings & Proposals</h3>
+        <p class="exp-desc">Say yes against the San Diego skyline. Whether it's an intimate proposal at sunset or a full wedding reception on the water, the bay provides a backdrop nobody will forget.</p>
+        <div class="exp-tags">
+          <span class="tag">Florals</span>
+          <span class="tag">Champagne Toast</span>
+          <span class="tag">Photography Ready</span>
+        </div>
+        <div class="exp-footer">
+          <span class="exp-from">Custom</span>
+          <span class="exp-price" style="font-size:1.4rem;align-self:center;margin-left:0.3rem">Pricing</span>
+        </div>
+      </div>
+
+    </div>
+    <div class="drag-hint container">
+      <span class="drag-hint-icon">👆</span>
+      <span style="font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted)">Drag to explore</span>
+    </div>
+  </div>
+</section>
+
+<!-- ──────── AOLANI FLAGSHIP ──────── -->
+<section class="section" id="fleet" style="background:var(--ink)">
+  <div class="container">
+    <div class="sr" style="margin-bottom:3.5rem">
+      <p class="eyebrow">Featured Vessel</p>
+      <h2 class="display-title">Meet <em>AOLANI</em></h2>
+    </div>
+    <div class="flagship-layout sr sr-d1">
+      <div class="flagship-visual">
+        <div class="flagship-bg-text">AOLANI</div>
+        <div class="flagship-water"></div>
+        <div class="flagship-accent">⚓</div>
+        <div class="flagship-name-block">
+          <p class="flagship-eyebrow">Our Flagship · Sailing Catamaran</p>
+          <h3 class="flagship-title">AOLANI</h3>
+          <p class="flagship-sub">"Heavenly Cloud" in Hawaiian</p>
+        </div>
+      </div>
+      <div class="flagship-info">
+        <p class="flagship-body">AOLANI is the jewel of the Sea Cured fleet. A stunning sailing catamaran with the capacity, the crew, and the character to make any occasion exceptional. Spacious twin hulls, a full open deck, professional bartender and crew — everything you need for the perfect day on San Diego Bay.</p>
+        <div class="specs-4">
+          <div class="spec-cell">
+            <div class="spec-val">48</div>
+            <div class="spec-key">Max Guests</div>
+          </div>
+          <div class="spec-cell">
+            <div class="spec-val">CAT</div>
+            <div class="spec-key">Hull Type</div>
+          </div>
+          <div class="spec-cell">
+            <div class="spec-val">Full</div>
+            <div class="spec-key">Bar Service</div>
+          </div>
+          <div class="spec-cell">
+            <div class="spec-val">✓</div>
+            <div class="spec-key">Catering Ready</div>
+          </div>
+        </div>
+        <div class="amenities">
+          <div class="amenity"><span class="amenity-dot"></span>Full open bar with professional bartender</div>
+          <div class="amenity"><span class="amenity-dot"></span>Spacious fore deck, nets & lounge seating</div>
+          <div class="amenity"><span class="amenity-dot"></span>Bluetooth sound system & shade canvas</div>
+          <div class="amenity"><span class="amenity-dot"></span>Catering partner coordination available</div>
+          <div class="amenity"><span class="amenity-dot"></span>Professional captain & first mate crew</div>
+          <div class="amenity"><span class="amenity-dot"></span>Onboard restrooms · USCG certified</div>
+        </div>
+        <a href="#book" class="btn-gold" style="align-self:flex-start">Book AOLANI</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ──────── SERVICES ──────── -->
+<section class="section services-section" id="services">
+  <div class="container">
+    <div class="sr">
+      <p class="eyebrow">On-Board Experience</p>
+      <h2 class="display-title">Catering &amp; <em>Bar</em></h2>
+      <div class="divider-gold"></div>
+      <p style="color:var(--muted);font-size:0.95rem;line-height:1.85;max-width:520px">Everything tastes better on the water. We work with top San Diego culinary partners and stock the bar so the only thing you need to bring is appetite.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card sr sr-d1" style="background: linear-gradient(to bottom, rgba(6,16,24,0.6) 0%, rgba(6,16,24,0.92) 50%), url('./images/party-bridge.jpg') center top / cover no-repeat;">
+        <div class="service-bg-icon">🍽</div>
+        <p class="service-eyebrow">Food</p>
+        <h3 class="service-title">Catering Packages</h3>
+        <p class="service-body">From beautiful grazing boards and artisan charcuterie to full hot buffets and plated meals, we coordinate with our trusted culinary partners to deliver food that matches your headcount, dietary needs, and party vibe. Available on select vessels — ask about options when booking.</p>
+        <div class="exp-tags">
+          <span class="tag">Grazing Boards</span>
+          <span class="tag">Hot Buffet</span>
+          <span class="tag">Dietary Options</span>
+          <span class="tag">Custom Menus</span>
+        </div>
+      </div>
+      <div class="service-card sr sr-d2" style="background: linear-gradient(to bottom, rgba(6,16,24,0.5) 0%, rgba(6,16,24,0.92) 50%), url('./images/cocktails-sunset.jpg') center top / cover no-repeat;">
+        <div class="service-bg-icon">🍾</div>
+        <p class="service-eyebrow">Drinks</p>
+        <h3 class="service-title">Bar Packages</h3>
+        <p class="service-body">From a curated wine and craft beer package to a full open bar with a dedicated professional bartender, we keep the glasses full all night. Non-alcoholic options always included. BYO is permitted on smaller vessels — we'll let you know what's available for your charter.</p>
+        <div class="exp-tags">
+          <span class="tag">Full Open Bar</span>
+          <span class="tag">Beer & Wine</span>
+          <span class="tag">Champagne Toast</span>
+          <span class="tag">NA Options</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ──────── HOW IT WORKS ──────── -->
+<section class="section how-section" id="how">
+  <div class="container how-inner">
+    <div class="sr">
+      <p class="eyebrow">Simple as That</p>
+      <h2 class="display-title">Four steps to <em>set sail</em></h2>
+    </div>
+    <div class="how-steps">
+      <div class="how-step sr sr-d1">
+        <div class="how-num">01</div>
+        <h3 class="how-title">Pick Your Experience</h3>
+        <p class="how-body">Browse our range from intimate 6-guest sunset sails to full 48-person catamaran parties. Filter by size, occasion, and what you want on board.</p>
+      </div>
+      <div class="how-step sr sr-d2">
+        <div class="how-num">02</div>
+        <h3 class="how-title">Customize</h3>
+        <p class="how-body">Choose your date, departure time, catering package, and bar option. We'll send you a tailored quote and confirm availability within 24 hours.</p>
+      </div>
+      <div class="how-step sr sr-d3">
+        <div class="how-num">03</div>
+        <h3 class="how-title">Confirm & Deposit</h3>
+        <p class="how-body">Secure your charter with a deposit. We handle all the logistics — vessel coordination, crew scheduling, caterer booking. You just show up.</p>
+      </div>
+      <div class="how-step sr sr-d4">
+        <div class="how-num">04</div>
+        <h3 class="how-title">Cast Off</h3>
+        <p class="how-body">Arrive at the dock, step aboard, and let San Diego Bay do the rest. Your crew, your bar, and your moment are ready and waiting.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ──────── OCCASIONS ──────── -->
+<section class="section occ-section">
+  <div class="container">
+    <div class="sr">
+      <p class="eyebrow">Perfect For</p>
+      <h2 class="display-title">Every <em>occasion</em></h2>
+    </div>
+    <div class="occ-cloud sr sr-d1">
+      <div class="occ-pill">🎂 Birthday Parties</div>
+      <div class="occ-pill">💍 Bachelorette Parties</div>
+      <div class="occ-pill">🥃 Bachelor Parties</div>
+      <div class="occ-pill">💒 Weddings & Proposals</div>
+      <div class="occ-pill">🥂 Anniversary Dinners</div>
+      <div class="occ-pill">🏢 Corporate Events</div>
+      <div class="occ-pill">🤝 Client Entertainment</div>
+      <div class="occ-pill">🎓 Graduation Parties</div>
+      <div class="occ-pill">🌅 Sunset Cruises</div>
+      <div class="occ-pill">📸 Photoshoots</div>
+      <div class="occ-pill">🎊 Holiday Parties</div>
+      <div class="occ-pill">👨‍👩‍👧 Family Gatherings</div>
+      <div class="occ-pill">🎵 Music Events</div>
+      <div class="occ-pill">🎬 Film & Media</div>
+    </div>
+  </div>
+</section>
+
+<!-- ──────── SOCIAL PROOF ──────── -->
+<section class="section reviews-section" id="reviews">
+  <div class="container">
+    <div class="sr">
+      <p class="eyebrow">What People Say</p>
+      <h2 class="display-title">The bay <em>never disappoints</em></h2>
+    </div>
+    <div class="reviews-grid">
+      <div class="review-card sr sr-d1">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">I've been on a lot of boat charters in San Diego and this was a completely different experience. The AOLANI is gorgeous, the crew was incredible, and the open bar package was absolutely worth it. Everyone is still talking about it.</p>
+        <div class="review-author">Jessica M.</div>
+        <div class="review-occasion">Bachelorette Party · 22 guests</div>
+      </div>
+      <div class="review-card sr sr-d2">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">We used Sea Cured for our Q4 client dinner and it completely blew everyone away. The bay at sunset is stunning — nobody could believe we had the whole boat. Catering was flawless. We're already booking again for Q1.</p>
+        <div class="review-author">Tom W.</div>
+        <div class="review-occasion">Corporate Client Event · 18 guests</div>
+      </div>
+      <div class="review-card sr sr-d3">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">Booked the sunset 6-pack for my anniversary and it was the most romantic evening we've had in years. Intimate, beautiful, and the captain found us the most perfect view of the bridge at dusk. Cannot recommend highly enough.</p>
+        <div class="review-author">Sarah & Daniel K.</div>
+        <div class="review-occasion">Anniversary · 2 guests</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ──────── PHOTO GALLERY ──────── -->
+<section class="gallery-section">
+  <div class="gallery-header">
+    <p class="eyebrow">Life on the Bay</p>
+    <h2 class="display-title">Moments that <em>stay with you</em></h2>
+  </div>
+  <div class="gallery-grid">
+    <div class="gallery-item g-wide"><img src="./images/bow-party-girls.jpg" alt="Friends celebrating on the bow" loading="lazy"></div>
+    <div class="gallery-item"><img src="./images/star-of-india.jpg" alt="Star of India from the bay" loading="lazy"></div>
+    <div class="gallery-item"><img src="./images/aolani-night-blue.jpg" alt="AOLANI catamaran lit blue at night" loading="lazy"></div>
+    <div class="gallery-item g-wide"><img src="./images/sailboat-golden-sunset.jpg" alt="Sailboat silhouette at golden sunset" loading="lazy"></div>
+    <div class="gallery-item"><img src="./images/tall-ship-luz-de-luna.jpg" alt="Tall ship on San Diego Bay" loading="lazy"></div>
+    <div class="gallery-item"><img src="./images/sd-waterfront.jpg" alt="San Diego waterfront" loading="lazy"></div>
+    <div class="gallery-item g-wide"><img src="./images/pink-sunset-marina.jpg" alt="Pink sunset over the marina" loading="lazy"></div>
+    <div class="gallery-item g-wide"><img src="./images/marina-night.jpg" alt="Marina reflections at night" loading="lazy"></div>
+  </div>
+</section>
+
+<!-- ──────── CTA ──────── -->
+<section class="cta-section" id="book">
+  <div class="cta-bg"></div>
+  <div class="cta-ghost">Set Sail</div>
+  <div class="cta-content">
+    <h2 class="cta-title sr">Ready to<br><em>set sail?</em></h2>
+    <p class="cta-sub sr sr-d1">Tell us about your event, group size, and preferred date. We'll match you with the perfect boat, crew, and package for an unforgettable day on San Diego Bay.</p>
+    <div class="cta-actions sr sr-d2">
+      <a href="/cdn-cgi/l/email-protection#563e333a3a39162533377b35232433327835393b" class="btn-gold">Get a Custom Quote</a>
+      <a href="tel:+16195550000" class="btn-outline">Call Us Today</a>
+    </div>
+    <p class="cta-email sr sr-d3"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="78101d141417380b1d19551b0d0a1d1c561b1715">[email&#160;protected]</a> &nbsp;·&nbsp; San Diego, CA</p>
+  </div>
+</section>
+
+<!-- ──────── FOOTER ──────── -->
+<footer>
+  <div class="footer-brand">
+    <a href="#" class="footer-logo"><img src="./Sea_Cured_Charters.png" alt="Sea·Cured Charters"></a>
+    <div class="footer-tagline">Yacht Parties on San Diego Bay</div>
+  </div>
+  <ul class="footer-links">
+    <li><a href="#experiences">Experiences</a></li>
+    <li><a href="#fleet">The Fleet</a></li>
+    <li><a href="#services">Catering & Bar</a></li>
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#book">Book Now</a></li>
+  </ul>
+  <div class="footer-copy">© 2024 Sea Cured — All rights reserved</div>
+</footer>
+
+<!-- ──────── SCRIPTS ──────── -->
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// Custom cursor
+const cur = document.getElementById('cur');
+const curRing = document.getElementById('curRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+function animCursor() {
+  cur.style.left = mx + 'px';
+  cur.style.top = my + 'px';
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  curRing.style.left = rx + 'px';
+  curRing.style.top = ry + 'px';
+  requestAnimationFrame(animCursor);
+}
+animCursor();
+
+// Cursor expand on hover
+document.querySelectorAll('a, button, .exp-card, .occ-pill').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    cur.style.width = '20px';
+    cur.style.height = '20px';
+    curRing.style.width = '60px';
+    curRing.style.height = '60px';
+  });
+  el.addEventListener('mouseleave', () => {
+    cur.style.width = '12px';
+    cur.style.height = '12px';
+    curRing.style.width = '40px';
+    curRing.style.height = '40px';
+  });
+});
+
+// Nav on scroll
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 80);
+});
+
+// Scroll reveal
+const srEls = document.querySelectorAll('.sr');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('vis'); } });
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+srEls.forEach(el => obs.observe(el));
+
+// Drag to scroll experience section
+const scroller = document.querySelector('.exp-scroller');
+const wrap = document.querySelector('.exp-scroller-wrap');
+let isDown = false, startX, scrollLeft;
+wrap.addEventListener('mousedown', e => {
+  isDown = true; wrap.style.cursor = 'grabbing';
+  startX = e.pageX - wrap.offsetLeft;
+  scrollLeft = wrap.scrollLeft;
+});
+wrap.addEventListener('mouseleave', () => { isDown = false; wrap.style.cursor = 'grab'; });
+wrap.addEventListener('mouseup',
