@@ -1636,4 +1636,7 @@ wrap.addEventListener('mousedown', e => {
   scrollLeft = wrap.scrollLeft;
 });
 wrap.addEventListener('mouseleave', () => { isDown = false; wrap.style.cursor = 'grab'; });
-wrap.addEventListener('mouseup',
+wrap.addEventListener('mouseup',() => { isDown = false; wrap.style.cursor = 'grab'; }); wrap.addEventListener('mousemove', e => { if (!isDown) return; const x = e.pageX - wrap.offsetLeft; wrap.scrollLeft = scrollLeft - (x - startX) * 1.5; }); wrap.style.cursor = 'grab';
+</script>
+</body>
+</html>
