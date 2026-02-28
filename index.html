@@ -1051,6 +1051,11 @@ footer {
 .occ-section{background:linear-gradient(rgba(255,255,255,.18),rgba(255,255,255,.18)),url("./images/White-party-sky.jpg") center/cover no-repeat!important}
 .occ-section .eyebrow,.occ-section .display-title,.occ-section .display-title em{color:#1a1a2e!important}
 .occ-section .occ-pill{color:#1a1a2e!important;border-color:rgba(26,26,46,.35)!important;background:rgba(255,255,255,.45)!important;backdrop-filter:blur(4px)}
+
+/* ── EXPERIENCE CARD CAROUSELS ── */
+.exp-carousel{position:relative;width:100%;height:100%;overflow:hidden}
+.exp-carousel .crs-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1.2s ease}
+.exp-carousel .crs-img.active{opacity:1}
 </style>
 </head>
 <body>
@@ -1274,7 +1279,7 @@ footer {
     <div class="exp-scroller">
 
       <div class="exp-card exp-featured">
-        <img class="exp-card-img" src="./images/kings-of-the-world.jpg" alt="Group celebrating on yacht with San Diego skyline">
+        <div class="exp-carousel"><img class="crs-img active" src="./images/kings-of-the-world.jpg" alt=""><img class="crs-img" src="./images/white-party.jpg" alt=""><img class="crs-img" src="./images/yacht-group-skyline.jpg" alt=""></div>
         <p class="exp-cap">Up to 48 guests · Flagship</p>
         <h3 class="exp-name">The Grand Catamaran Party</h3>
         <p class="exp-desc">The full Sea Cured experience. AOLANI and our premium catamarans offer expansive deck space, full bar service, catering options, and unmatched views of the downtown skyline and Coronado Bridge. The ultimate floating event venue on San Diego Bay.</p>
@@ -1293,7 +1298,7 @@ footer {
       </div>
 
       <div class="exp-card">
-        <img class="exp-card-img" src="./images/guys-hug.jpg" alt="Friends sharing a moment on the bay">
+        <div class="exp-carousel"><img class="crs-img active" src="./images/guys-hug.jpg" alt=""><img class="crs-img" src="./images/couple-bow.jpg" alt=""><img class="crs-img" src="./images/girls-champ-toast.png" alt=""></div>
         <p class="exp-cap">Up to 6 guests</p>
         <h3 class="exp-name">The Sunset 6-Pack</h3>
         <p class="exp-desc">Small, personal, and unforgettable. A private sailboat, six close friends, cold drinks, and San Diego's legendary golden hour. The most intimate way to experience the bay.</p>
@@ -1310,7 +1315,7 @@ footer {
       </div>
 
       <div class="exp-card">
-        <img class="exp-card-img" src="./images/White-party-sky.jpg" alt="White party on the catamaran">
+        <div class="exp-carousel"><img class="crs-img active" src="./images/White-party-sky.jpg" alt=""><img class="crs-img" src="./images/white-party-family.jpg" alt=""><img class="crs-img" src="./images/group-star-india.jpg" alt=""></div>
         <p class="exp-cap">Up to 24 guests</p>
         <h3 class="exp-name">The Mid-Size Charter</h3>
         <p class="exp-desc">Big enough to dance, intimate enough to feel exclusive. Perfect for bachelorettes, birthdays, and smaller team outings. Bar packages available and catering can be arranged.</p>
@@ -1327,7 +1332,7 @@ footer {
       </div>
 
       <div class="exp-card">
-        <img class="exp-card-img" src="./images/corporate-group.jpg" alt="Corporate team outing on the bay">
+        <div class="exp-carousel"><img class="crs-img active" src="./images/corporate-group.jpg" alt=""><img class="crs-img" src="./images/Rady-shell.jpg" alt=""><img class="crs-img" src="./images/marriot-dusk.jpg" alt=""></div>
         <p class="exp-cap">Flexible capacity</p>
         <h3 class="exp-name">Corporate & Private Events</h3>
         <p class="exp-desc">Impress clients, reward your team, or host a milestone celebration unlike any other. Fully customizable with catering, branded elements, and a dedicated Sea Cured event coordinator.</p>
@@ -1343,7 +1348,7 @@ footer {
       </div>
 
       <div class="exp-card">
-        <img class="exp-card-img" src="./images/wedding-bay.jpg" alt="Wedding ceremony on the bay">
+        <div class="exp-carousel"><img class="crs-img active" src="./images/wedding-bay.jpg" alt=""><img class="crs-img" src="./images/bride-lift.jpg" alt=""><img class="crs-img" src="./images/proposal.jpg" alt=""></div>
         <p class="exp-cap">Up to 48 guests</p>
         <h3 class="exp-name">Weddings & Proposals</h3>
         <p class="exp-desc">Say yes against the San Diego skyline. Whether it's an intimate proposal at sunset or a full wedding reception on the water, the bay provides a backdrop nobody will forget.</p>
@@ -1651,6 +1656,17 @@ wrap.addEventListener('mousedown', e => {
 });
 wrap.addEventListener('mouseleave', () => { isDown = false; wrap.style.cursor = 'grab'; });
 wrap.addEventListener('mouseup',() => { isDown = false; wrap.style.cursor = 'grab'; }); wrap.addEventListener('mousemove', e => { if (!isDown) return; const x = e.pageX - wrap.offsetLeft; wrap.scrollLeft = scrollLeft - (x - startX) * 1.5; }); wrap.style.cursor = 'grab';
+
+/* Carousel auto-rotate */
+document.querySelectorAll('.exp-carousel').forEach((c,ci) => {
+  const imgs = c.querySelectorAll('.crs-img');
+  let idx = 0;
+  setInterval(() => {
+    imgs[idx].classList.remove('active');
+    idx = (idx + 1) % imgs.length;
+    imgs[idx].classList.add('active');
+  }, 3500 + ci * 500);
+});
 </script>
 </body>
 </html>
