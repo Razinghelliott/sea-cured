@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sea Cured — Yacht Parties on San Diego Bay</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&family=DM+Serif+Display:ital@0;1&family=Gwendolyn:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
 /* ─────────────────────────────
@@ -491,7 +491,16 @@ nav.scrolled {
   letter-spacing: -0.02em;
   opacity: 0; animation: riseIn 1s ease forwards 0.6s;
 }
-.hero-h1 .italic { font-style: italic; color: var(--gold2); display: block; }
+.hero-h1 .italic {
+  font-family: 'Gwendolyn', cursive;
+  font-weight: 700;
+  font-style: normal;
+  color: var(--gold2);
+  display: inline;
+  font-size: 1.15em;
+  letter-spacing: 0.01em;
+  line-height: 1;
+}
 .hero-h1 .italic.blush { color: var(--blush); }
 .hero-sub {
   margin-top: 2rem;
@@ -1250,9 +1259,8 @@ footer {
       San Diego Bay &nbsp;·&nbsp; Private Charters &nbsp;·&nbsp; Est. 2024
     </p>
     <h1 class="hero-h1">
-      Salt air.
-      <span class="italic">Golden</span>
-      <span class="italic blush">hour.</span>
+      Salt air.<br>
+      <span class="italic">Golden </span><span class="italic blush">hour.</span>
     </h1>
     <p class="hero-sub">Intimate sunset sails for six. Full-party catamarans for forty-eight. Every charter is private, every moment is yours — on San Diego Bay with open bar, catering, and the Pacific as your backdrop.</p>
     <div class="hero-actions">
