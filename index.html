@@ -163,16 +163,74 @@ nav.scrolled {
   100% { background-position: 0% 100%; }
 }
 
-/* Sun disc */
+/* Sun – artistic layered disc */
 .sun {
   position: absolute;
-  width: 90px; height: 90px;
-  border-radius: 50%;
-  background: radial-gradient(circle, #fff8e0 0%, #f5c842 40%, #e8724a 100%);
-  box-shadow: 0 0 60px 20px rgba(244,196,67,0.4), 0 0 120px 60px rgba(232,114,74,0.2);
-  right: 18%;
-  animation: sunMove 16s ease-in-out infinite alternate;
+  width: 200px; height: 200px;
+  right: calc(18% - 55px);
   pointer-events: none;
+  animation: sunMove 16s ease-in-out infinite alternate;
+}
+/* Core glow */
+.sun-core {
+  position: absolute;
+  inset: 30%;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fffbe6 0%, #ffe68a 35%, #f5b731 65%, #e8724a 100%);
+  box-shadow:
+    0 0 30px 8px rgba(255,230,138,0.6),
+    0 0 80px 30px rgba(245,183,49,0.35),
+    0 0 140px 60px rgba(232,114,74,0.18);
+}
+/* Soft atmospheric haze / corona ring */
+.sun-haze {
+  position: absolute;
+  inset: 8%;
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    rgba(255,248,220,0.45) 0%,
+    rgba(245,200,66,0.22) 40%,
+    rgba(232,114,74,0.08) 70%,
+    transparent 100%
+  );
+  filter: blur(6px);
+  animation: hazeBreath 6s ease-in-out infinite alternate;
+}
+@keyframes hazeBreath {
+  0%   { transform: scale(1);   opacity: 0.85; }
+  100% { transform: scale(1.1); opacity: 1;    }
+}
+/* Rotating ray wheel – painted-light look */
+.sun-rays {
+  position: absolute;
+  inset: 0;
+  animation: raysSpin 90s linear infinite;
+}
+.sun-rays svg { width: 100%; height: 100%; }
+@keyframes raysSpin { to { transform: rotate(360deg); } }
+/* Subtle noise-texture overlay for a hand-painted quality */
+.sun-texture {
+  position: absolute;
+  inset: 18%;
+  border-radius: 50%;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23n)' opacity='0.12'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+  opacity: 0.5;
+  pointer-events: none;
+}
+/* Lens flare accent */
+.sun-flare {
+  position: absolute;
+  width: 18%; height: 18%;
+  top: 26%; right: 28%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 40%, rgba(255,255,245,0.9), transparent 70%);
+  filter: blur(2px);
+  animation: flarePulse 4s ease-in-out infinite alternate;
+}
+@keyframes flarePulse {
+  0%   { opacity: 0.6; transform: scale(1); }
+  100% { opacity: 1;   transform: scale(1.15); }
 }
 @keyframes sunMove {
   0%   { bottom: 110%; opacity: 0; }
@@ -1114,7 +1172,35 @@ footer {
     <div class="star s34 star--twinkle2"></div>
     <div class="star s35 star--twinkle1"></div>
   </div>
-  <div class="sun"></div>
+  <div class="sun">
+    <div class="sun-rays">
+      <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="rayG" cx="50%" cy="50%" r="50%">
+            <stop offset="30%" stop-color="#f5c842" stop-opacity="0"/>
+            <stop offset="60%" stop-color="#f5c842" stop-opacity="0.12"/>
+            <stop offset="100%" stop-color="#f5c842" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <polygon points="100,100 96,0 104,0"  fill="url(#rayG)" opacity=".7"/>
+        <polygon points="100,100 0,96 0,104"   fill="url(#rayG)" opacity=".5"/>
+        <polygon points="100,100 96,200 104,200" fill="url(#rayG)" opacity=".6"/>
+        <polygon points="100,100 200,96 200,104" fill="url(#rayG)" opacity=".55"/>
+        <polygon points="100,100 30,3 38,8"     fill="url(#rayG)" opacity=".35"/>
+        <polygon points="100,100 170,3 162,8"   fill="url(#rayG)" opacity=".4"/>
+        <polygon points="100,100 197,30 192,38" fill="url(#rayG)" opacity=".3"/>
+        <polygon points="100,100 197,170 192,162" fill="url(#rayG)" opacity=".45"/>
+        <polygon points="100,100 170,197 162,192" fill="url(#rayG)" opacity=".38"/>
+        <polygon points="100,100 30,197 38,192"  fill="url(#rayG)" opacity=".5"/>
+        <polygon points="100,100 3,170 8,162"   fill="url(#rayG)" opacity=".32"/>
+        <polygon points="100,100 3,30 8,38"     fill="url(#rayG)" opacity=".42"/>
+      </svg>
+    </div>
+    <div class="sun-haze"></div>
+    <div class="sun-core"></div>
+    <div class="sun-texture"></div>
+    <div class="sun-flare"></div>
+  </div>
   <div class="clouds-wrap">
     <div class="cloud cloud-1"></div>
     <div class="cloud cloud-2"></div>
