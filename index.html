@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sea Cured — Yacht Parties on San Diego Bay</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&family=DM+Serif+Display:ital@0;1&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;0,6..96,900;1,6..96,400;1,6..96,700;1,6..96,900&display=swap" rel="stylesheet">
 
 <style>
 /* ─────────────────────────────
@@ -491,7 +491,14 @@ nav.scrolled {
   letter-spacing: -0.02em;
   opacity: 0; animation: riseIn 1s ease forwards 0.6s;
 }
-.hero-h1 .italic { font-style: italic; color: var(--gold2); display: block; }
+.hero-h1 .italic {
+  font-family: 'Bodoni Moda', serif;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--gold2);
+  display: block;
+  letter-spacing: 0.02em;
+}
 .hero-h1 .italic.blush { color: var(--blush); }
 .hero-sub {
   margin-top: 2rem;
