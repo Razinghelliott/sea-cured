@@ -1260,6 +1260,81 @@ footer {
   color: rgba(232,220,200,0.35);
   margin-top: 0.2rem;
 }
+/* Date picker */
+.date-field { position: relative; cursor: pointer; }
+.date-field .form-input { cursor: pointer; }
+.date-field-icon {
+  position: absolute; right: 1rem; top: 50%;
+  transform: translateY(-50%);
+  color: var(--gold); opacity: 0.6;
+  pointer-events: none; font-size: 0.95rem;
+}
+.cal-dropdown {
+  display: none;
+  background: linear-gradient(165deg, #0d1f33 0%, #081118 100%);
+  border: 1px solid rgba(212,168,83,0.2);
+  border-radius: 4px;
+  padding: 1rem;
+  margin-top: 0.5rem;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+}
+.cal-dropdown.visible { display: block; }
+.cal-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+.cal-month {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem; font-weight: 500;
+  color: var(--foam);
+  letter-spacing: 0.04em;
+}
+.cal-nav {
+  background: none; border: 1px solid rgba(212,168,83,0.2);
+  color: var(--gold); font-size: 0.8rem;
+  width: 28px; height: 28px;
+  border-radius: 50%; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s, border-color 0.2s;
+}
+.cal-nav:hover { background: rgba(212,168,83,0.12); border-color: var(--gold); }
+.cal-grid {
+  display: grid; grid-template-columns: repeat(7, 1fr);
+  gap: 2px; text-align: center;
+}
+.cal-day-label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.6rem; font-weight: 500;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: rgba(232,220,200,0.35);
+  padding: 0.3rem 0;
+}
+.cal-day {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem; color: var(--foam);
+  padding: 0.45rem 0;
+  border-radius: 3px; cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  border: none; background: none;
+}
+.cal-day:hover { background: rgba(212,168,83,0.15); }
+.cal-day.today {
+  border: 1px solid rgba(212,168,83,0.3);
+}
+.cal-day.selected {
+  background: var(--gold); color: var(--ink);
+  font-weight: 500;
+}
+.cal-day.disabled {
+  color: rgba(232,220,200,0.15);
+  pointer-events: none; cursor: default;
+}
+.cal-day.booked {
+  color: rgba(232,114,74,0.5);
+  text-decoration: line-through;
+  pointer-events: none;
+}
+.cal-day.empty { pointer-events: none; }
 @media (max-width: 600px) {
   .modal-card { padding: 2.5rem 1.5rem 2rem; }
   .modal-title { font-size: 1.6rem; }
@@ -1973,7 +2048,18 @@ document.querySelectorAll('.exp-carousel').forEach((c,ci) => {
       </div>
       <div class="form-group">
         <label class="form-label" for="bk-date">Preferred Date</label>
-        <input class="form-input" type="text" id="bk-date" name="date" placeholder="Date picker coming in Step 3" readonly>
+        <div class="date-field" id="dateField">
+          <input class="form-input" type="text" id="bk-date" name="date" placeholder="Select a date" readonly>
+          <span class="date-field-icon">&#9662;</span>
+        </div>
+        <div class="cal-dropdown" id="calDropdown">
+          <div class="cal-header">
+            <button type="button" class="cal-nav" id="calPrev">&#8249;</button>
+            <span class="cal-month" id="calMonth"></span>
+            <button type="button" class="cal-nav" id="calNext">&#8250;</button>
+          </div>
+          <div class="cal-grid" id="calGrid"></div>
+        </div>
       </div>
       <div class="form-group">
         <label class="form-label" for="bk-notes">Special Requests</label>
@@ -2020,6 +2106,128 @@ document.addEventListener('keydown', e => {
     document.body.style.overflow = '';
   }
 });
+
+// ── DATE PICKER ──
+(function() {
+  const dateField = document.getElementById('dateField');
+  const dateInput = document.getElementById('bk-date');
+  const calDrop   = document.getElementById('calDropdown');
+  const calMonth  = document.getElementById('calMonth');
+  const calGrid   = document.getElementById('calGrid');
+  const calPrev   = document.getElementById('calPrev');
+  const calNext   = document.getElementById('calNext');
+
+  const MONTHS = ['January','February','March','April','May','June',
+                  'July','August','September','October','November','December'];
+  const DAYS   = ['Su','Mo','Tu','We','Th','Fr','Sa'];
+
+  let viewDate = new Date();
+  let selectedDate = null;
+
+  // Booked dates placeholder — Step 4 will populate this from Google Calendar
+  // Format: ['2026-03-15', '2026-03-22', ...]
+  const bookedDates = [];
+
+  function pad(n) { return n < 10 ? '0' + n : '' + n; }
+  function dateKey(y, m, d) { return y + '-' + pad(m + 1) + '-' + pad(d); }
+
+  function render() {
+    const y = viewDate.getFullYear();
+    const m = viewDate.getMonth();
+    const today = new Date();
+    today.setHours(0,0,0,0);
+
+    calMonth.textContent = MONTHS[m] + ' ' + y;
+    calGrid.innerHTML = '';
+
+    // Day labels
+    DAYS.forEach(d => {
+      const lbl = document.createElement('span');
+      lbl.className = 'cal-day-label';
+      lbl.textContent = d;
+      calGrid.appendChild(lbl);
+    });
+
+    // Empty cells before first day
+    const first = new Date(y, m, 1).getDay();
+    for (let i = 0; i < first; i++) {
+      const empty = document.createElement('span');
+      empty.className = 'cal-day empty';
+      calGrid.appendChild(empty);
+    }
+
+    // Days of month
+    const daysInMonth = new Date(y, m + 1, 0).getDate();
+    for (let d = 1; d <= daysInMonth; d++) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'cal-day';
+      btn.textContent = d;
+
+      const thisDate = new Date(y, m, d);
+      const key = dateKey(y, m, d);
+
+      // Past dates
+      if (thisDate < today) {
+        btn.classList.add('disabled');
+      }
+      // Booked dates
+      else if (bookedDates.includes(key)) {
+        btn.classList.add('booked');
+      }
+      else {
+        btn.addEventListener('click', () => selectDate(y, m, d));
+      }
+
+      // Today highlight
+      if (thisDate.getTime() === today.getTime()) {
+        btn.classList.add('today');
+      }
+
+      // Selected highlight
+      if (selectedDate && selectedDate.getTime() === thisDate.getTime()) {
+        btn.classList.add('selected');
+      }
+
+      calGrid.appendChild(btn);
+    }
+  }
+
+  function selectDate(y, m, d) {
+    selectedDate = new Date(y, m, d);
+    const formatted = MONTHS[m] + ' ' + d + ', ' + y;
+    dateInput.value = formatted;
+    calDrop.classList.remove('visible');
+    render();
+  }
+
+  // Toggle calendar
+  dateField.addEventListener('click', () => {
+    calDrop.classList.toggle('visible');
+    if (calDrop.classList.contains('visible')) render();
+  });
+
+  // Month navigation
+  calPrev.addEventListener('click', e => {
+    e.stopPropagation();
+    viewDate.setMonth(viewDate.getMonth() - 1);
+    render();
+  });
+  calNext.addEventListener('click', e => {
+    e.stopPropagation();
+    viewDate.setMonth(viewDate.getMonth() + 1);
+    render();
+  });
+
+  // Close calendar when clicking outside
+  document.addEventListener('click', e => {
+    if (!e.target.closest('#dateField') && !e.target.closest('#calDropdown')) {
+      calDrop.classList.remove('visible');
+    }
+  });
+
+  render();
+})();
 </script>
 </body>
 </html>
