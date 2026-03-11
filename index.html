@@ -1193,17 +1193,77 @@ footer {
   background: linear-gradient(to right, transparent, var(--border), transparent);
   margin-bottom: 2rem;
 }
-/* Placeholder for form fields (Step 2) */
-.modal-form-placeholder {
-  text-align: center;
-  padding: 2rem 0;
-  color: var(--muted);
-  font-size: 0.85rem;
+/* Modal logo */
+.modal-logo {
+  height: 28px; width: auto;
+  margin-bottom: 0.8rem;
+  opacity: 0.85;
+}
+/* Form styles */
+.modal-form { display: flex; flex-direction: column; gap: 1rem; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.form-group { display: flex; flex-direction: column; gap: 0.35rem; }
+.form-label {
   font-family: 'DM Sans', sans-serif;
+  font-size: 0.7rem; font-weight: 500;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: rgba(232,220,200,0.55);
+}
+.form-input, .form-select {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem; font-weight: 300;
+  color: var(--foam);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(212,168,83,0.15);
+  border-radius: 3px;
+  padding: 0.75rem 1rem;
+  outline: none;
+  transition: border-color 0.25s, background 0.25s;
+  width: 100%;
+}
+.form-input::placeholder { color: rgba(232,220,200,0.3); }
+.form-input:focus, .form-select:focus {
+  border-color: var(--gold);
+  background: rgba(212,168,83,0.06);
+}
+.form-textarea { resize: vertical; min-height: 70px; }
+.select-wrap { position: relative; }
+.select-wrap::after {
+  content: '';
+  position: absolute; right: 1rem; top: 50%;
+  transform: translateY(-50%);
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid var(--gold);
+  pointer-events: none;
+}
+.form-select {
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  padding-right: 2.5rem;
+}
+.form-select option {
+  background: var(--deep); color: var(--foam);
+}
+.form-submit {
+  margin-top: 0.5rem;
+  width: 100%;
+  text-align: center;
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+}
+.form-note {
+  text-align: center;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.75rem;
+  color: rgba(232,220,200,0.35);
+  margin-top: 0.2rem;
 }
 @media (max-width: 600px) {
   .modal-card { padding: 2.5rem 1.5rem 2rem; }
   .modal-title { font-size: 1.6rem; }
+  .form-row { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -1845,12 +1905,83 @@ document.querySelectorAll('.exp-carousel').forEach((c,ci) => {
 <div class="modal-overlay" id="bookingModal">
   <div class="modal-card">
     <button class="modal-close" id="modalClose">&times;</button>
-    <p class="modal-eyebrow">Sea Cured</p>
+    <img src="./Sea_Cured_Charters.png" alt="Sea Cured Charters" class="modal-logo">
     <h2 class="modal-title">Reserve Your Charter</h2>
     <p class="modal-subtitle">Tell us about your perfect day on the bay and we'll match you with the right boat, crew, and package.</p>
     <div class="modal-divider"></div>
-    <!-- Form fields will go here in Step 2 -->
-    <div class="modal-form-placeholder">Booking form coming soon</div>
+    <form class="modal-form" id="bookingForm">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="bk-first">First Name</label>
+          <input class="form-input" type="text" id="bk-first" name="firstName" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="bk-last">Last Name</label>
+          <input class="form-input" type="text" id="bk-last" name="lastName" required>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="bk-email">Email</label>
+          <input class="form-input" type="email" id="bk-email" name="email" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="bk-phone">Phone</label>
+          <input class="form-input" type="tel" id="bk-phone" name="phone" required>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="bk-guests">Party Size</label>
+          <div class="select-wrap">
+            <select class="form-select" id="bk-guests" name="guests" required>
+              <option value="" disabled selected>Select</option>
+              <option value="2-6">2 – 6 guests</option>
+              <option value="7-12">7 – 12 guests</option>
+              <option value="13-24">13 – 24 guests</option>
+              <option value="25-48">25 – 48 guests</option>
+              <option value="49+">49+ guests</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="bk-occasion">Occasion</label>
+          <div class="select-wrap">
+            <select class="form-select" id="bk-occasion" name="occasion" required>
+              <option value="" disabled selected>Select</option>
+              <option value="sunset">Sunset Cruise</option>
+              <option value="birthday">Birthday</option>
+              <option value="corporate">Corporate Event</option>
+              <option value="bachelor">Bachelor / Bachelorette</option>
+              <option value="wedding">Wedding / Proposal</option>
+              <option value="private">Private Party</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="bk-vessel">Preferred Vessel</label>
+        <div class="select-wrap">
+          <select class="form-select" id="bk-vessel" name="vessel">
+            <option value="" disabled selected>Select (optional)</option>
+            <option value="aolani">AOLANI Catamaran (up to 48)</option>
+            <option value="sailboat">Private Sailboat (up to 6)</option>
+            <option value="unsure">Not sure — help me choose</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="bk-date">Preferred Date</label>
+        <input class="form-input" type="text" id="bk-date" name="date" placeholder="Date picker coming in Step 3" readonly>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="bk-notes">Special Requests</label>
+        <textarea class="form-input form-textarea" id="bk-notes" name="notes" rows="3" placeholder="Catering preferences, decorations, anything else..."></textarea>
+      </div>
+      <button type="submit" class="btn-gold form-submit">Request a Quote</button>
+      <p class="form-note">We'll reply within 24 hours with options and pricing.</p>
+    </form>
   </div>
 </div>
 
