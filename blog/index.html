@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sea Cured Charters Blog - Stories, tips, and guides for unforgettable days on San Diego Bay. Discover yacht charter adventures, party planning tips, and local guides.">
+    <meta name="theme-color" content="#061018">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="The Sea Cured Journal - San Diego Yacht Charter Blog">
+    <meta property="og:description" content="Stories, tips, and guides for unforgettable days on San Diego Bay.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="../Sea_Cured_Charters.png">
+    
+    <title>Blog - Sea Cured Charters | San Diego Bay Yacht Charters</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #061018;
+            color: #f5f0e8;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 300;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Navigation */
+        nav {
+            background-color: #061018;
+            border-bottom: 1px solid rgba(212, 168, 83, 0.18);
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .logo {
+            height: 40px;
+            width: auto;
+            display: block;
+        }
+
+        .nav-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.25rem;
+            font-weight: 400;
+            letter-spacing: 1px;
+            color: #f5f0e8;
+        }
+
+        .nav-logo-link {
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-logo-link:hover {
+            opacity: 0.8;
+        }
+
+        .book-btn {
+            background-color: #d4a853;
+            color: #061018;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 500;
+            font-size: 0.9rem;
+            border-radius: 3px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+        }
+
+        .book-btn:hover {
+            background-color: #f0c96b;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(212, 168, 83, 0.25);
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 4rem 2rem;
+            background-color: #061018;
+            border-bottom: 1px solid rgba(212, 168, 83, 0.18);
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #f5f0e8;
+            letter-spacing: -0.5px;
+        }
+
+        .hero p {
+            font-size: clamp(1rem, 2.5vw, 1.25rem);
+            color: rgba(232, 220, 200, 0.55);
+            max-width: 600px;
+            margin: 0 auto;
+            font-weight: 300;
+        }
+
+        /* Main Content */
+        main {
+            flex: 1;
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Blog Cards Grid */
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .blog-card {
+            background-color: rgba(6, 16, 24, 0.6);
+            border: 1px solid rgba(212, 168, 83, 0.18);
+            border-radius: 4px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .blog-card:hover {
+            border-color: rgba(212, 168, 83, 0.4);
+            box-shadow: 0 8px 24px rgba(212, 168, 83, 0.15);
+            transform: translateY(-4px);
+        }
+
+        .category-tag {
+            display: inline-block;
+            background-color: #d4a853;
+            color: #061018;
+            padding: 0.4rem 0.9rem;
+            border-radius: 2px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 1rem;
+            width: fit-content;
+        }
+
+        .blog-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.3;
+            color: #f5f0e8;
+        }
+
+        .blog-card p {
+            color: rgba(232, 220, 200, 0.55);
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+            flex: 1;
+            line-height: 1.7;
+        }
+
+        .blog-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(212, 168, 83, 0.18);
+        }
+
+        .read-time {
+            font-size: 0.85rem;
+            color: rgba(232, 220, 200, 0.55);
+            font-weight: 300;
+        }
+
+        .read-more {
+            color: #d4a853;
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            letter-spacing: 0.3px;
+        }
+
+        .blog-card:hover .read-more {
+            color: #f0c96b;
+            gap: 0.75rem;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #061018;
+            border-top: 1px solid rgba(212, 168, 83, 0.18);
+            padding: 3rem 2rem;
+            text-align: center;
+            color: rgba(232, 220, 200, 0.55);
+            font-size: 0.9rem;
+            margin-top: auto;
+        }
+
+        footer a {
+            color: #d4a853;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: #f0c96b;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-link {
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .copyright {
+            margin-top: 1.5rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem 1.5rem;
+            }
+
+            .nav-left {
+                gap: 1rem;
+            }
+
+            .nav-title {
+                font-size: 1rem;
+            }
+
+            .logo {
+                height: 35px;
+            }
+
+            .book-btn {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.85rem;
+            }
+
+            .hero {
+                padding: 3rem 1.5rem;
+            }
+
+            .hero h1 {
+                margin-bottom: 0.75rem;
+            }
+
+            main {
+                padding: 2rem 1.5rem;
+            }
+
+            .blog-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .blog-card {
+                padding: 1.5rem;
+            }
+
+            footer {
+                padding: 2rem 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            nav {
+                padding: 1rem;
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+
+            .nav-left {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .nav-title {
+                display: none;
+            }
+
+            .book-btn {
+                width: 100%;
+                text-align: center;
+            }
+
+            .logo {
+                height: 30px;
+            }
+
+            .hero h1 {
+                font-size: 1.75rem;
+            }
+
+            .hero p {
+                font-size: 0.95rem;
+            }
+
+            main {
+                padding: 1.5rem 1rem;
+            }
+
+            .blog-footer {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-left">
+            <a href="../" class="nav-logo-link">
+                <img src="../Sea_Cured_Charters.png" alt="Sea Cured Charters" class="logo">
+            </a>
+            <span class="nav-title">Blog</span>
+        </div>
+        <a href="../#book" class="book-btn">Book Now</a>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>The Sea Cured Journal</h1>
+        <p>Stories, tips, and guides for unforgettable days on San Diego Bay</p>
+    </section>
+
+    <!-- Main Content -->
+    <main>
+        <div class="blog-grid">
+            <!-- Blog Card 1 -->
+            <a href="plan-yacht-bachelorette-party-san-diego.html" class="blog-card">
+                <span class="category-tag">Party Planning</span>
+                <h3>How to Plan the Ultimate Yacht Bachelorette Party in San Diego</h3>
+                <p>From selecting the perfect vessel to coordinating champagne toasts and sunset celebrations, planning a bachelorette party on the water requires attention to detail. Learn the essentials of hosting an unforgettable celebration that your guests will remember for years to come.</p>
+                <div class="blog-footer">
+                    <span class="read-time">8 min read</span>
+                    <span class="read-more">Read more →</span>
+                </div>
+            </a>
+
+            <!-- Blog Card 2 -->
+            <a href="best-sunset-spots-san-diego-bay.html" class="blog-card">
+                <span class="category-tag">Local Guide</span>
+                <h3>The 5 Best Sunset Spots on San Diego Bay (From the Water)</h3>
+                <p>Discover the most picturesque viewpoints for golden hour magic—from the rugged cliffs of Point Loma to the charming harbor views near Coronado. Experience San Diego's most breathtaking sunsets from the unique perspective of being out on the water.</p>
+                <div class="blog-footer">
+                    <span class="read-time">6 min read</span>
+                    <span class="read-more">Read more →</span>
+                </div>
+            </a>
+
+            <!-- Blog Card 3 -->
+            <a href="corporate-team-building-yacht-charter.html" class="blog-card">
+                <span class="category-tag">Corporate Events</span>
+                <h3>Why San Diego Companies Are Moving Team Building to the Water</h3>
+                <p>Breaking free from conference rooms, leading San Diego companies are discovering the transformative power of team building on the bay. Learn how yacht charters create the perfect environment for strengthening relationships, fostering collaboration, and achieving team goals.</p>
+                <div class="blog-footer">
+                    <span class="read-time">7 min read</span>
+                    <span class="read-more">Read more →</span>
+                </div>
+            </a>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <p class="footer-link">
+                <a href="../">Return to Sea Cured Charters</a>
+            </p>
+            <p class="copyright">
+                &copy; 2026 Sea Cured Charters. All rights reserved. | San Diego Bay Yacht Charters
+            </p>
+        </div>
+    </footer>
+</body>
+</html>
