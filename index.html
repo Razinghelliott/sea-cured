@@ -1405,6 +1405,119 @@ footer {
   .faq-section { padding: 5rem 2rem; }
   .faq-columns { grid-template-columns: 1fr; }
 }
+
+/* ── WHAT'S INCLUDED SECTION ── */
+.included-section {
+  padding: 7rem 4rem;
+  background: var(--ink);
+}
+.included-header { max-width: 600px; margin-bottom: 3.5rem; }
+.included-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem; max-width: 1200px;
+}
+.included-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2rem 1.8rem;
+  transition: border-color 0.3s, transform 0.3s;
+}
+.included-card:hover {
+  border-color: rgba(212,168,83,0.35);
+  transform: translateY(-4px);
+}
+.included-card-tag {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.65rem; font-weight: 500;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.6rem;
+}
+.included-card-name {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.4rem; color: var(--white);
+  margin-bottom: 0.3rem;
+}
+.included-card-capacity {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem; color: var(--muted);
+  margin-bottom: 1.5rem;
+}
+.included-list { list-style: none; padding: 0; margin: 0 0 1.5rem; }
+.included-list li {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem; font-weight: 300;
+  color: var(--foam);
+  padding: 0.4rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  display: flex; align-items: center; gap: 0.6rem;
+}
+.included-list li:last-child { border-bottom: none; }
+.inc-check { color: var(--gold); font-size: 0.75rem; flex-shrink: 0; }
+.inc-x { color: rgba(232,220,200,0.25); font-size: 0.75rem; flex-shrink: 0; }
+.included-addons-title {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.65rem; font-weight: 500;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: rgba(232,220,200,0.4);
+  margin-bottom: 0.5rem;
+}
+.included-addon {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem; font-weight: 300;
+  color: var(--muted);
+  padding: 0.25rem 0;
+}
+@media (max-width: 900px) {
+  .included-section { padding: 5rem 2rem; }
+  .included-grid { grid-template-columns: 1fr; max-width: 480px; }
+}
+
+/* ── POLICY SECTION ── */
+.policy-section {
+  padding: 6rem 4rem;
+  background: linear-gradient(rgba(11,37,63,0.85), rgba(6,16,24,0.95)),
+    url("./images/sailboat-golden-sunset.jpg") center/cover no-repeat;
+}
+.policy-header { max-width: 600px; margin-bottom: 3rem; }
+.policy-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 2rem; max-width: 1200px;
+}
+.policy-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2rem 1.8rem;
+}
+.policy-icon {
+  font-size: 1.5rem; margin-bottom: 0.8rem;
+  display: block;
+}
+.policy-card-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.15rem; color: var(--white);
+  margin-bottom: 0.8rem;
+}
+.policy-card-text {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem; font-weight: 300;
+  color: var(--muted); line-height: 1.75;
+}
+.policy-card-text strong {
+  color: var(--foam); font-weight: 500;
+}
+.policy-note {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem; color: var(--muted);
+  margin-top: 2.5rem; max-width: 700px;
+  line-height: 1.7;
+}
+@media (max-width: 900px) {
+  .policy-section { padding: 5rem 2rem; }
+  .policy-grid { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
@@ -1866,6 +1979,74 @@ footer {
   </div>
 </section>
 
+<!-- ──────── WHAT'S INCLUDED ──────── -->
+<section class="included-section" id="included">
+  <div class="included-header">
+    <p class="eyebrow sr">No Surprises</p>
+    <h2 class="display-title sr">What's <em>included</em></h2>
+    <div class="divider-gold sr"></div>
+  </div>
+  <div class="included-grid">
+    <!-- SUNSET SAIL -->
+    <div class="included-card sr sr-d1">
+      <p class="included-card-tag">Intimate</p>
+      <h3 class="included-card-name">The Sunset 6-Pack</h3>
+      <p class="included-card-capacity">Up to 6 guests · Private sailboat · 2-3 hours</p>
+      <ul class="included-list">
+        <li><span class="inc-check">&#10003;</span> Licensed captain</li>
+        <li><span class="inc-check">&#10003;</span> Bluetooth sound system</li>
+        <li><span class="inc-check">&#10003;</span> Ice, water, & soft drinks</li>
+        <li><span class="inc-check">&#10003;</span> BYOB welcome</li>
+        <li><span class="inc-check">&#10003;</span> Blankets & cushions</li>
+        <li><span class="inc-check">&#10003;</span> San Diego Bay sunset route</li>
+      </ul>
+      <p class="included-addons-title">Popular Add-Ons</p>
+      <p class="included-addon">+ Charcuterie board · from $75</p>
+      <p class="included-addon">+ Wine & beer package · from $120</p>
+      <p class="included-addon">+ Proposal decor setup · from $150</p>
+    </div>
+
+    <!-- PARTY CHARTER -->
+    <div class="included-card sr sr-d2">
+      <p class="included-card-tag">Most Popular</p>
+      <h3 class="included-card-name">Party Charter</h3>
+      <p class="included-card-capacity">Up to 48 guests · AOLANI Catamaran · 3-4 hours</p>
+      <ul class="included-list">
+        <li><span class="inc-check">&#10003;</span> Captain & full crew</li>
+        <li><span class="inc-check">&#10003;</span> Professional bartender</li>
+        <li><span class="inc-check">&#10003;</span> Open bar (beer, wine, spirits)</li>
+        <li><span class="inc-check">&#10003;</span> Premium sound system & Bluetooth</li>
+        <li><span class="inc-check">&#10003;</span> Two onboard restrooms</li>
+        <li><span class="inc-check">&#10003;</span> Spacious deck & lounge seating</li>
+        <li><span class="inc-check">&#10003;</span> Ice, mixers, & garnishes</li>
+      </ul>
+      <p class="included-addons-title">Popular Add-Ons</p>
+      <p class="included-addon">+ Full catering · from $30/person</p>
+      <p class="included-addon">+ DJ or live music · from $200</p>
+      <p class="included-addon">+ Custom decorations · from $150</p>
+    </div>
+
+    <!-- WEDDING / PREMIUM -->
+    <div class="included-card sr sr-d3">
+      <p class="included-card-tag">Premium</p>
+      <h3 class="included-card-name">Wedding & Events</h3>
+      <p class="included-card-capacity">Up to 48 guests · AOLANI Catamaran · 4+ hours</p>
+      <ul class="included-list">
+        <li><span class="inc-check">&#10003;</span> Everything in Party Charter</li>
+        <li><span class="inc-check">&#10003;</span> Dedicated event coordinator</li>
+        <li><span class="inc-check">&#10003;</span> Extended charter time</li>
+        <li><span class="inc-check">&#10003;</span> Priority scheduling</li>
+        <li><span class="inc-check">&#10003;</span> Early boarding for setup</li>
+        <li><span class="inc-check">&#10003;</span> Ceremony-ready deck layout</li>
+      </ul>
+      <p class="included-addons-title">Popular Add-Ons</p>
+      <p class="included-addon">+ Captain officiant · included on request</p>
+      <p class="included-addon">+ Floral arrangements · from $300</p>
+      <p class="included-addon">+ Photographer referral · from $400</p>
+    </div>
+  </div>
+</section>
+
 <!-- ──────── OCCASIONS ──────── -->
 <section class="section occ-section">
   <div class="container">
@@ -2083,6 +2264,55 @@ footer {
   </div>
 </section>
 
+<!-- ──────── CANCELLATION & WEATHER POLICY ──────── -->
+<section class="policy-section" id="policy">
+  <div class="container">
+    <div class="sr">
+      <p class="eyebrow">Transparent Policies</p>
+      <h2 class="display-title">No surprises, <em>just sunsets</em></h2>
+      <div class="divider-gold"></div>
+    </div>
+    <div class="policy-grid">
+
+      <div class="policy-card sr sr-d1">
+        <div class="policy-icon">⛅</div>
+        <h3 class="policy-title">Weather Policy</h3>
+        <p class="policy-text">San Diego averages 266 sunny days a year — but the ocean has its own plans. If conditions are unsafe (sustained winds above 20 knots, heavy fog, or storm warnings), we'll notify you as early as possible.</p>
+        <ul class="policy-list">
+          <li><strong>Captain's call:</strong> Final go/no-go decision is made by the captain the morning of your charter for the safety of all guests.</li>
+          <li><strong>Weather cancellation:</strong> Full reschedule to any available date within 12 months, no penalty.</li>
+          <li><strong>Light rain or overcast:</strong> Charters proceed — the bay is beautiful in any mood. We'll confirm with you beforehand.</li>
+        </ul>
+      </div>
+
+      <div class="policy-card sr sr-d2">
+        <div class="policy-icon">📋</div>
+        <h3 class="policy-title">Cancellation Tiers</h3>
+        <p class="policy-text">We understand plans change. Our cancellation policy is designed to be fair while protecting the date you've reserved.</p>
+        <ul class="policy-list">
+          <li><strong>30+ days out:</strong> Full refund minus a $150 processing fee, or free reschedule.</li>
+          <li><strong>15–29 days out:</strong> 50% refund, or reschedule with the remaining balance applied as credit.</li>
+          <li><strong>Under 14 days:</strong> No refund, but you may transfer the booking to another party or reschedule for a $250 rebooking fee.</li>
+          <li><strong>No-shows:</strong> Forfeit full charter fee. We'll try to reach you 1 hour before departure.</li>
+        </ul>
+      </div>
+
+      <div class="policy-card sr sr-d3">
+        <div class="policy-icon">🤝</div>
+        <h3 class="policy-title">Our Promises</h3>
+        <p class="policy-text">We're a small crew, not a corporation. Every booking matters to us personally, and we stand behind these commitments.</p>
+        <ul class="policy-list">
+          <li><strong>No hidden fees:</strong> Your quote is your quote. Period.</li>
+          <li><strong>Responsive communication:</strong> We reply to every inquiry within 4 hours during business hours.</li>
+          <li><strong>Flexible rebooking:</strong> Life happens — we'll always work with you to find a new date.</li>
+          <li><strong>Satisfaction guarantee:</strong> If something wasn't right, talk to us. We'll make it right or offer credit toward your next sail.</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
 <!-- ──────── CTA ──────── -->
 <section class="cta-section" id="book">
   <div class="cta-bg"></div>
@@ -2109,6 +2339,8 @@ footer {
     <li><a href="#fleet">The Fleet</a></li>
     <li><a href="#services">Catering & Bar</a></li>
     <li><a href="#how">How It Works</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#policy">Policies</a></li>
     <li><a href="#book">Book Now</a></li>
   </ul>
   <div class="footer-copy">Â© 2024 Sea Cured — All rights reserved</div>
