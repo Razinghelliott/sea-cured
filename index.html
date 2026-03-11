@@ -1340,6 +1340,71 @@ footer {
   .modal-title { font-size: 1.6rem; }
   .form-row { grid-template-columns: 1fr; }
 }
+
+/* ── FAQ SECTION ── */
+.faq-section {
+  padding: 7rem 4rem;
+  background: linear-gradient(rgba(6,16,24,0.92), rgba(6,16,24,0.92)),
+    url("./images/marina-night.jpg") center/cover no-repeat;
+}
+.faq-header { max-width: 600px; margin-bottom: 3.5rem; }
+.faq-columns {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1.5rem 3rem; max-width: 1200px;
+}
+.faq-category-title {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.7rem; font-weight: 500;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 0.5rem; margin-top: 1.5rem;
+}
+.faq-category-title:first-child { margin-top: 0; }
+.faq-item {
+  border-bottom: 1px solid rgba(212,168,83,0.1);
+  overflow: hidden;
+}
+.faq-q {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1rem 0; cursor: pointer; gap: 1rem;
+  transition: color 0.2s;
+}
+.faq-q:hover { color: var(--gold2); }
+.faq-q-text {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem; font-weight: 400;
+  color: var(--foam); line-height: 1.5;
+}
+.faq-q:hover .faq-q-text { color: var(--gold2); }
+.faq-toggle {
+  flex-shrink: 0;
+  width: 24px; height: 24px;
+  border: 1px solid rgba(212,168,83,0.25);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.75rem; color: var(--gold);
+  transition: transform 0.3s, background 0.3s, border-color 0.3s;
+}
+.faq-item.open .faq-toggle {
+  transform: rotate(45deg);
+  background: rgba(212,168,83,0.15);
+  border-color: var(--gold);
+}
+.faq-a {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease, padding 0.35s ease;
+}
+.faq-item.open .faq-a { max-height: 300px; }
+.faq-a-text {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem; font-weight: 300;
+  color: var(--muted); line-height: 1.75;
+  padding-bottom: 1.2rem;
+}
+@media (max-width: 768px) {
+  .faq-section { padding: 5rem 2rem; }
+  .faq-columns { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
@@ -1356,6 +1421,7 @@ footer {
     <li><a href="#fleet">The Fleet</a></li>
     <li><a href="#services">Catering & Bar</a></li>
     <li><a href="#how">How It Works</a></li>
+    <li><a href="#faq">FAQ</a></li>
     <li><a href="#book" class="nav-book">Book Now</a></li>
   </ul>
 </nav>
@@ -1874,6 +1940,149 @@ footer {
   </div>
 </section>
 
+<!-- ──────── FAQ ──────── -->
+<section class="faq-section" id="faq">
+  <div class="faq-header">
+    <p class="eyebrow sr">Common Questions</p>
+    <h2 class="display-title sr">Everything you need <em>to know</em></h2>
+    <div class="divider-gold sr"></div>
+  </div>
+  <div class="faq-columns">
+    <!-- LEFT COLUMN -->
+    <div>
+      <p class="faq-category-title">Booking & Pricing</p>
+
+      <div class="faq-item">
+        <div class="faq-q"><span class="faq-q-text">How far in advance should I book?</span><span class="faq-toggle">+</span></div>
+        <div class="faq-a"><p class="faq-a-text">We recommend booking at least 2-4 weeks ahead, especially for weekend sunset sails and peak season (June-September). Corporate events and weddings should be booked 1-3 months in advance. Last-minute availability sometimes opens up — reach out and we'll check.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q"><span class="faq-q-text">What's included in the charter price?</span><span class="faq-toggle">+</span></div>
+        <div class="faq-a"><p class="faq-a-text">Every charter includes your captain and crew, a professional bartender, basic ice and mixers, and full use of the vessel and its amenities (sound system, seating areas, deck space). Catering, premium bar packages, and decorations are available as add-ons so you only pay for what you want.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q"><span class="faq-q-text">Are there any hidden fees?</span><span class="faq-toggle">+</span></div>
+        <div class="faq-a"><p class="faq-a-text">No surprises. Your quote includes the charter fee, crew, and any add-ons you select. The only additional cost is crew gratuity (18% is customary, similar to a restaurant). We break down every cost before you put down a deposit so you know exactly what you're paying.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q"><span class="faq-q-text">How much is the deposit, and when is the balance due?</span><span class="faq-toggle">+</span></div>
+        <div class="faq-a"><p class="faq-a-text">A 25% deposit secures your date. The remaining balance is due 14 days before your charter. We accept all major credit cards and can set up a payment plan for larger events.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q"><span class="faq-q-text">Can I bring my own alcohol or food?</span><span class="faq-toggle">+</span></div>
+        <div class="faq-a"><p class="faq-a-text">BYOB policies vary by vessel. Some of our boats allow you to bring your own drinks while others require using the onboard bar service for liability reasons. We'll let you know the policy for your specific vessel when you book. Outside food is generally welcome.</p></div>
+      </div>
+
+      <p class="faq-category-title">Weather & Cancellation</p>
+
+      <div class="faq-item">
+        <div class="faq-q"><span class="faq-q-text">What happens if the weather is bad?</span><span class="faq-toggle">+</span></div>
+        <div class="faq-a"><p class="faq-a-text">Safety comes first. If conditions are unsafe, we'll contact you at least 24 hours in advance and reschedule to your preferred alternative date at no extra cost — or issue a full refund, your choice. Light overcast or mild wind usually doesn't affect sailing; San Diego has 260+ days of sunshine.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q"><span class="faq-q-text">What's your cancellation policy?</span><span class="faq-toggle">+</span></div>
+        <div class="faq-a"><p class="faq-a-text">Cancel 30+ days out: full refund. Cancel 15-29 days: 50% refund or free reschedule. Cancel within 14 days: no refund, but we'll help you transfer the booking to a new date when possible. If we cancel due to weather, you always get a full refund or free reschedule.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q"><span class="faq-q-text">Do you go out in the rain?</span><span class="faq-toggle">+</span></div>
+        <div class="faq-a"><p class="faq-a-text">It depends on conditions. Light rain with calm seas? Many groups still go out and have a blast. Heavy rain, high winds, or rough swells? We'll reschedule. Your captain makes the final call based on safety, and we'll always communicate proactively.</p></div>
+      </div>
+
+      <p class="faq-category-title">Safety & Comfort</p>
+
+      <div class="faq-item">
+        <div class="faq-q"><span class="faq-q-text">Will I get seasick?</span><span class="faq-toggle">+</span></div>
+        <div class="faq-a"><p class="faq-a-text">San Diego Bay is very protected, so water is typically calm. Our catamarans have two hulls which dramatically reduces rocking compared to regular boats. Tips: take Dramamine 30 minutes before boarding, stay hydrated, eat a light meal beforehand, and stay on deck where you can see the horizon. Most guests feel perfectly fine.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q"><span class="faq-q-text">Is it safe for kids?</span><span class="faq-toggle">+</span></div>
+        <div class="faq-a"><p class="faq-a-text">Absolutely. All vessels carry Coast Guard-required safety equipment including life jackets in all sizes. Our crew is trained in safety procedures and first aid. Minors must be accompanied by a parent or guardian. The calm waters of San Diego Bay make it family-friendly.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q"><span class="faq-q-text">What certifications do your captains have?</span><span class="faq-toggle">+</span></div>
+        <div class="faq-a"><p class="faq-a-text">All of our captains hold USCG (United States Coast Guard) credentials, carry current first aid and CPR certifications, and have years of experience navigating San Diego Bay. Every vessel is fully insured and undergoes regular safety inspections.</p></div>
+      </div>
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div>
+      <p class="faq-category-title">Day-Of Logistics</p>
+
+      <div class="faq-item">
+        <div class="faq-q"><span class="faq-q-text">Where do we board, and where do I park?</span><span class="faq-toggle">+</span></div>
+        <div class="faq-a"><p class="faq-a-text">Boarding location depends on the vessel — most depart from Harbor Island or Shelter Island. We'll send detailed directions, a Google Maps pin, and parking instructions in your confirmation email. Street and lot parking are available near all departure points.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q"><span class="faq-q-text">How early should we arrive?</span><span class="faq-toggle">+</span></div>
+        <div class="faq-a"><p class="faq-a-text">Please arrive 15 minutes before your scheduled departure. This gives you time to park, find the dock, and get settled. Your charter time starts at the booked departure time, not when you arrive, so punctuality means more time on the water.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q"><span class="faq-q-text">What should I bring?</span><span class="faq-toggle">+</span></div>
+        <div class="faq-a"><p class="faq-a-text">Sunscreen (reef-safe preferred), sunglasses, a light jacket or layers for the evening breeze, and non-marking shoes or sandals. We provide everything else. Leave the coolers at home — we've got drinks covered. Pro tip: bring a phone charger for all those sunset photos.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q"><span class="faq-q-text">Are there restrooms on board?</span><span class="faq-toggle">+</span></div>
+        <div class="faq-a"><p class="faq-a-text">Yes — all of our vessels have onboard restroom facilities. The AOLANI catamaran has two restrooms for guest comfort.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q"><span class="faq-q-text">Can we play our own music?</span><span class="faq-toggle">+</span></div>
+        <div class="faq-a"><p class="faq-a-text">Yes! All boats have a sound system with Bluetooth connectivity. Create a playlist beforehand and connect your phone when you board. Want a DJ for your event? We can arrange that too — just ask when booking.</p></div>
+      </div>
+
+      <p class="faq-category-title">Food & Drink</p>
+
+      <div class="faq-item">
+        <div class="faq-q"><span class="faq-q-text">What catering options are available?</span><span class="faq-toggle">+</span></div>
+        <div class="faq-a"><p class="faq-a-text">We partner with top San Diego caterers to offer everything from light appetizer platters to full multi-course meals. Options include Mexican, Mediterranean, BBQ, sushi, and more. Dietary restrictions and allergies are always accommodated — just let us know in advance.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q"><span class="faq-q-text">What's included in the bar?</span><span class="faq-toggle">+</span></div>
+        <div class="faq-a"><p class="faq-a-text">Our standard bar package includes a curated selection of beer, wine, and spirits plus mixers, ice, and garnishes. Premium and craft upgrades are available. Non-alcoholic options are always on hand. Your bartender handles everything — you just enjoy.</p></div>
+      </div>
+
+      <p class="faq-category-title">Events & Customization</p>
+
+      <div class="faq-item">
+        <div class="faq-q"><span class="faq-q-text">Can we decorate the boat?</span><span class="faq-toggle">+</span></div>
+        <div class="faq-a"><p class="faq-a-text">Absolutely — banners, flowers, table settings, and signage are all welcome. The only restrictions: no glitter, confetti, or balloons (they're harmful to marine life and can clog drains). We can recommend decoration vendors or set things up before your group arrives.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q"><span class="faq-q-text">Can the captain officiate a wedding?</span><span class="faq-toggle">+</span></div>
+        <div class="faq-a"><p class="faq-a-text">Some of our captains are ordained and can perform the ceremony right on the water. Let us know during booking and we'll match you with the right captain. We can also accommodate bringing your own officiant on board.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q"><span class="faq-q-text">What's the maximum group size?</span><span class="faq-toggle">+</span></div>
+        <div class="faq-a"><p class="faq-a-text">The AOLANI catamaran accommodates up to 48 guests. For groups of 49-96, we can arrange dual catamarans sailing side by side. Intimate sailboats hold up to 6 guests. We'll help you find the right vessel for your group size.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q"><span class="faq-q-text">Do you offer corporate event packages?</span><span class="faq-toggle">+</span></div>
+        <div class="faq-a"><p class="faq-a-text">Yes — we handle team outings, client entertainment, holiday parties, and executive retreats. Corporate packages include flexible timing, custom catering, and branding options. We can provide W-9s and work with your event planning team.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q"><span class="faq-q-text">Can we bring a photographer or videographer?</span><span class="faq-toggle">+</span></div>
+        <div class="faq-a"><p class="faq-a-text">Of course — and we highly recommend it. The light on San Diego Bay is incredible, especially during golden hour. Your photographer counts toward the guest total. We can also recommend local photographers who specialize in on-water shoots.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ──────── CTA ──────── -->
 <section class="cta-section" id="book">
   <div class="cta-bg"></div>
@@ -1973,6 +2182,18 @@ document.querySelectorAll('.exp-carousel').forEach((c,ci) => {
     idx = (idx + 1) % imgs.length;
     imgs[idx].classList.add('active');
   }, 3500 + ci * 500);
+});
+
+// FAQ accordion
+document.querySelectorAll('.faq-q').forEach(q => {
+  q.addEventListener('click', () => {
+    const item = q.parentElement;
+    // Close all other open items
+    document.querySelectorAll('.faq-item.open').forEach(open => {
+      if (open !== item) open.classList.remove('open');
+    });
+    item.classList.toggle('open');
+  });
 });
 </script>
 
